@@ -1,13 +1,17 @@
-## 프로젝트
+# e-커머스 서비스 프로젝트
 
-## Getting Started
+## 마일스톤
+![milestone.png](docs/images/milestone.png)
+[(링크)](https://glittery-mushroom-c03.notion.site/16b30e1eb5dc80949828ef506ca177e7?v=16b30e1eb5dc812ea942000cfb31dd22)
 
-### Prerequisites
+## 플로우 차트
+[플로우 차트 링크](docs/flowChart.md)
 
-#### Running Docker Containers
+## 시퀀스 다이어그램
+[시퀀스 다이어그램 링크](docs/sequenceDiagram.md)
 
-`local` profile 로 실행하기 위하여 인프라가 설정되어 있는 Docker 컨테이너를 실행해주셔야 합니다.
+## ERD
+![img.png](docs/images/erd.png)
 
-```bash
-docker-compose up -d
-```
+## API 명세서
+[API 명세서](docs/apiSpecification.md)
