@@ -11,7 +11,7 @@
 [시퀀스 다이어그램 링크](docs/sequenceDiagram.md)
 
 ## ERD
-![img.png](docs/images/erd.png)
+![erd](docs/images/erd.png)
 
 ## API 명세서
 [API 명세서](docs/apiSpecification.md)
