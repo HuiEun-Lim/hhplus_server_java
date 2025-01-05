@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.interfaces.order.dto.response;
+package kr.hhplus.be.server.interfaces.payment.dto.response;
 
 import kr.hhplus.be.server.domain.order.OrderPay;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderPayResponse {
+public class PaymentResponse {
 
     private String message;
     private OrderPay data;
