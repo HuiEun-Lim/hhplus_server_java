@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.interfaces.web.point.dto.response;
 
-import kr.hhplus.be.server.domain.point.UserPoint;
+import kr.hhplus.be.server.interfaces.web.point.model.UserPointInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PointResponse {
     private String message;
-    private UserPoint data;
+    private UserPointInfo data;
 }

@@ -13,4 +13,9 @@ public class PointRequest {
 
     @NotNull
     private Long chargeAmount;
+
+    public PointRequest (Long userId, Long amount) {
+        this.userId = userId;
+        this.chargeAmount = amount;
+    }
 }
