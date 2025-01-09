@@ -5,13 +5,11 @@ import kr.hhplus.be.server.domain.point.dto.UserPointResult;
 import kr.hhplus.be.server.domain.point.service.PointService;
 import kr.hhplus.be.server.domain.user.dto.UserResult;
 import kr.hhplus.be.server.domain.user.service.UserService;
-import kr.hhplus.be.server.support.util.point.PointValidationUtils;
-import kr.hhplus.be.server.support.util.user.UserValidationUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
+@Component("pointFacade")
 @RequiredArgsConstructor
 public class PointFacade {
 

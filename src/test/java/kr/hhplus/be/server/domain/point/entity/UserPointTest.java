@@ -2,12 +2,12 @@ package kr.hhplus.be.server.domain.point.entity;
 
 import kr.hhplus.be.server.support.exception.point.PointErrorCode;
 import kr.hhplus.be.server.support.exception.point.PointException;
-import kr.hhplus.be.server.support.util.point.PointValidationUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserPointTest {
 
@@ -30,7 +30,6 @@ class UserPointTest {
         Long userAmount = 2000L;
         UserPoint userPoint = new UserPoint(1L, 1L, 0L);
 
-        // when & then
         // when & then
         assertThatThrownBy(() -> userPoint.decrease(userAmount))
                 .isInstanceOf(PointException.class)

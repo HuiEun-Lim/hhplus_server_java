@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@WebMvcTest
+@WebMvcTest(PointController.class)
 @ExtendWith(MockitoExtension.class)
 class PointControllerTest {
 

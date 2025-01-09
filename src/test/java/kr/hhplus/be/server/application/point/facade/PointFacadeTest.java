@@ -5,16 +5,13 @@ import kr.hhplus.be.server.domain.point.dto.UserPointResult;
 import kr.hhplus.be.server.domain.point.service.PointService;
 import kr.hhplus.be.server.domain.user.dto.UserResult;
 import kr.hhplus.be.server.domain.user.service.UserService;
-import kr.hhplus.be.server.support.exception.user.UserErrorCode;
-import kr.hhplus.be.server.support.exception.user.UserException;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
