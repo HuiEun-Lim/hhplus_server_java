@@ -4,6 +4,7 @@ import kr.hhplus.be.server.domain.order.dto.request.OrderProductServiceRequest;
 import kr.hhplus.be.server.domain.order.dto.request.OrderServiceRequest;
 import kr.hhplus.be.server.domain.order.dto.response.OrderItem;
 import kr.hhplus.be.server.domain.order.dto.response.OrderResult;
+import kr.hhplus.be.server.domain.order.dto.response.TopOrderProduct;
 import kr.hhplus.be.server.domain.order.entity.Order;
 import kr.hhplus.be.server.domain.order.entity.OrderProduct;
 import kr.hhplus.be.server.domain.order.enums.OrderStateType;
@@ -127,6 +128,33 @@ class OrderServiceTest {
         assertThat(result.get(0).getProductName()).isEqualTo("불고기");
 
         verify(orderProductRepository, times(2)).save(any(OrderProduct.class));
+    }
+
+    @Test
+    @DisplayName("최근 3일간 판매 수량이 많은 상위 5개 상품을 조회한다.")
+    void testFindTop5OrderProducts() {
+        // Given
+        List<TopOrderProduct> mockTopProducts = Arrays.asList(
+                new TopOrderProduct(1L, 120L),
+                new TopOrderProduct(2L, 100L),
+                new TopOrderProduct(3L, 80L),
+                new TopOrderProduct(4L, 60L),
+                new TopOrderProduct(5L, 50L)
+        );
+
+        when(orderProductRepository.findTop5OrderProducts()).thenReturn(mockTopProducts);
+
+        // When
+        List<TopOrderProduct> result = orderService.findTop5OrderProducts();
+
+        // Then
+        assertThat(result).isNotNull();
+        assertThat(result.size()).isEqualTo(5);
+
+        assertThat(result.get(0).getProductId()).isEqualTo(1L);
+        assertThat(result.get(0).getTotalQuantity()).isEqualTo(120L);
+
+        verify(orderProductRepository, times(1)).findTop5OrderProducts();
     }
 
 

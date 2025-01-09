@@ -4,6 +4,7 @@ import kr.hhplus.be.server.domain.order.dto.request.OrderProductServiceRequest;
 import kr.hhplus.be.server.domain.order.dto.request.OrderServiceRequest;
 import kr.hhplus.be.server.domain.order.dto.response.OrderItem;
 import kr.hhplus.be.server.domain.order.dto.response.OrderResult;
+import kr.hhplus.be.server.domain.order.dto.response.TopOrderProduct;
 import kr.hhplus.be.server.domain.order.entity.Order;
 import kr.hhplus.be.server.domain.order.entity.OrderProduct;
 import kr.hhplus.be.server.domain.order.repository.OrderProductRepository;
@@ -57,5 +58,10 @@ public class OrderService {
         }
 
         return result;
+    }
+
+    @Transactional(readOnly = true)
+    public List<TopOrderProduct> findTop5OrderProducts() {
+        return orderProductRepository.findTop5OrderProducts();
     }
 }
