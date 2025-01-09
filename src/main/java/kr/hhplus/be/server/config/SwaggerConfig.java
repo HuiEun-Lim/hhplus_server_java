@@ -15,6 +15,6 @@ public class SwaggerConfig {
                 .info(apiInfo());}
     private Info apiInfo() {
         return new Info()
-                .title("Springdoc 테스트")
-                .description("Springdoc을 사용한 Swagger UI 테스트")
+                .title("e-커머스 서비스 구현")
+                .description("항해 플러스 백엔드 7기 e-커머스 서비스 구현")
                 .version("1.0.0");}}
