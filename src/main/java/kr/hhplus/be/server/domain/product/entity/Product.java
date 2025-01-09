@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.domain.product;
+package kr.hhplus.be.server.domain.product.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +22,5 @@ public class Product extends BaseEntity {
 
     private String productName;
     private Long price;
-    private Long stock;
 
 }
