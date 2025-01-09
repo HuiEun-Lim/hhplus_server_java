@@ -1,17 +1,18 @@
 package kr.hhplus.be.server.interfaces.web.product.dto.response;
 
-import kr.hhplus.be.server.interfaces.web.product.model.ProductInfo;
+import kr.hhplus.be.server.domain.product.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductResponse {
+public class TopProductResponse {
     private String message;
-    private Page<ProductInfo> data;
+    private List<Product> data;
 }

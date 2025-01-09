@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.interfaces.web.payment.dto.response;
 
-import kr.hhplus.be.server.domain.order.OrderPay;
+import kr.hhplus.be.server.domain.payment.entity.Payment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 public class PaymentResponse {
 
     private String message;
-    private OrderPay data;
+    private Payment data;
 }

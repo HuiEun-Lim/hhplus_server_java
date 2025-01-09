@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.interfaces.web.order.dto.response;
 
-import kr.hhplus.be.server.domain.order.Order;
+import kr.hhplus.be.server.domain.order.entity.Order;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
