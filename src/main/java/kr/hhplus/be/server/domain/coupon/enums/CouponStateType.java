@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.domain.point;
+package kr.hhplus.be.server.domain.coupon.enums;
 
 /**
  * 쿠폰 상태 종류

@@ -1,11 +1,13 @@
-package kr.hhplus.be.server.domain.coupon;
+package kr.hhplus.be.server.domain.coupon.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import kr.hhplus.be.server.domain.BaseEntity;
-import kr.hhplus.be.server.domain.point.CouponStateType;
+import kr.hhplus.be.server.domain.coupon.enums.CouponStateType;
+import kr.hhplus.be.server.support.exception.coupon.CouponErrorCode;
+import kr.hhplus.be.server.support.exception.coupon.CouponException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,5 +34,11 @@ public class CouponIssuance extends BaseEntity {
         this.userId = userId;
         this.couponId = couponId;
         this.couponState = couponStateType;
+    }
+
+    public void checkCouponState(){
+        if(this.couponState.equals(CouponStateType.USE)) {
+            throw new CouponException(CouponErrorCode.ALREADY_USED_COUPON);
+        }
     }
 }
