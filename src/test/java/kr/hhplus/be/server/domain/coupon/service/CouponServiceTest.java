@@ -169,7 +169,7 @@ class CouponServiceTest {
         assertEquals(CouponStateType.USE, result.getCouponState());
 
         verify(couponRepository, times(1)).findByCouponIdWithLock(couponId);
-        verify(couponIssuanceRepository, times(1)).findByIssuanceIdWithLock(couponId);
+        verify(couponIssuanceRepository, times(1)).findByUserIdAndCouponId(userId, couponId); // 호출 메서드 수정
         verify(couponIssuanceRepository, times(1)).save(any(CouponIssuance.class));
     }
 
@@ -201,7 +201,7 @@ class CouponServiceTest {
 
         Coupon mockCoupon = new Coupon(couponId, "1,000원 할인 쿠폰", DiscountType.AMOUNT, 1000L, 1000L, 100L, LocalDateTime.now().plusDays(10));
         when(couponRepository.findByCouponIdWithLock(couponId)).thenReturn(mockCoupon);
-        when(couponIssuanceRepository.findByIssuanceIdWithLock(couponId)).thenReturn(null);
+        when(couponIssuanceRepository.findByUserIdAndCouponId(userId, couponId)).thenReturn(null); // 올바른 Stub 설정
 
         // When & Then
         assertThatThrownBy(() -> couponService.useUserIssuedCoupon(userId, couponId))
@@ -209,7 +209,7 @@ class CouponServiceTest {
                 .hasMessage(CouponErrorCode.ISSUED_COUPON_IS_NULL.getMessage());
 
         verify(couponRepository, times(1)).findByCouponIdWithLock(couponId);
-        verify(couponIssuanceRepository, times(1)).findByIssuanceIdWithLock(couponId);
+        verify(couponIssuanceRepository, times(1)).findByUserIdAndCouponId(userId, couponId); // 호출 검증
         verify(couponIssuanceRepository, never()).save(any(CouponIssuance.class));
     }
 }
