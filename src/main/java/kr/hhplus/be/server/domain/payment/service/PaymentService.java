@@ -19,7 +19,7 @@ public class PaymentService {
         Payment payment = request.toEntity();
         Payment savedPayment = repository.save(payment);
 
-        return PaymentResult.toResult(payment);
+        return PaymentResult.toResult(savedPayment);
     }
 
 }
