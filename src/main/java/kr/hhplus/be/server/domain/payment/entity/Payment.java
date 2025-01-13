@@ -1,9 +1,6 @@
 package kr.hhplus.be.server.domain.payment.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import kr.hhplus.be.server.domain.BaseEntity;
 import kr.hhplus.be.server.domain.payment.enums.PaymentStatusType;
 import lombok.AllArgsConstructor;
@@ -23,6 +20,7 @@ public class Payment extends BaseEntity {
 
     private Long orderId;
     private Long payAmt;
+    @Enumerated(EnumType.STRING)
     private PaymentStatusType paymentStatus;
 
 }
