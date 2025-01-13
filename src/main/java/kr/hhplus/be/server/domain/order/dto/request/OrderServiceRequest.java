@@ -29,4 +29,8 @@ public class OrderServiceRequest {
                 .orderState(this.orderState)
                 .build();
     }
+
+    public void changeOrderStatus(OrderStateType orderState){
+        this.orderState = orderState;
+    }
 }

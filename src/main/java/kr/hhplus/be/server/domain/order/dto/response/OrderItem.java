@@ -37,4 +37,26 @@ public class OrderItem {
                 .totalPrice(product.getPrice() * quantity)
                 .build();
     }
+
+    public OrderProduct toEntity(){
+        return OrderProduct.builder()
+                .orderId(this.orderId)
+                .productId(this.productId)
+                .productName(this.productName)
+                .productPrice(this.productPrice)
+                .quantity(this.quantity)
+                .totalPrice(this.totalPrice)
+                .build();
+    }
+
+    public static OrderItem create(Long orderId, Long productId, String productName, Long productPrice, Long quantity, Long totalPrice) {
+        return OrderItem.builder()
+                .orderId(orderId)
+                .productId(productId)
+                .productName(productName)
+                .productPrice(productPrice)
+                .quantity(quantity)
+                .totalPrice(totalPrice)
+                .build();
+    }
 }

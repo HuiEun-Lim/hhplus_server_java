@@ -1,6 +1,5 @@
 package kr.hhplus.be.server.domain.order.service;
 
-import kr.hhplus.be.server.domain.order.dto.request.OrderProductServiceRequest;
 import kr.hhplus.be.server.domain.order.dto.request.OrderServiceRequest;
 import kr.hhplus.be.server.domain.order.dto.response.OrderItem;
 import kr.hhplus.be.server.domain.order.dto.response.OrderResult;
@@ -106,9 +105,9 @@ class OrderServiceTest {
     @DisplayName("주문 상품을 생성한다.")
     void testCreateOrderProduct_Success() {
         // Given
-        List<OrderProductServiceRequest> requests = Arrays.asList(
-                new OrderProductServiceRequest(1L, 101L, "불고기", 1000L, 2L, 2000L),
-                new OrderProductServiceRequest(1L, 102L, "육개장", 2000L, 1L, 2000L)
+        List<OrderItem> requests = Arrays.asList(
+                OrderItem.create(1L, 101L, "불고기", 1000L, 2L, 2000L),
+                OrderItem.create(1L, 102L, "육개장", 2000L, 1L, 2000L)
         );
 
         List<OrderProduct> mockOrderProducts = Arrays.asList(
@@ -157,5 +156,50 @@ class OrderServiceTest {
         verify(orderProductRepository, times(1)).findTop5OrderProducts();
     }
 
+    @Test
+    @DisplayName("주문 상태를 성공적으로 업데이트한다.")
+    void updateOrderState_Success() {
+        // Given
+        Long orderId = 1L;
+        OrderStateType newState = OrderStateType.PAYED;
+
+        when(orderRepository.updateState(orderId, newState)).thenReturn(1);
+
+        Order mockOrder = spy(Order.builder()
+                .orderId(orderId)
+                .orderState(OrderStateType.ORDERED)
+                .build());
+        doNothing().when(mockOrder).checkOrderState(newState);
+
+        when(orderRepository.findByOrderId(orderId)).thenReturn(mockOrder);
+
+        // When
+        orderService.updateOrderState(orderId, newState);
+
+        // Then
+        verify(orderRepository, times(1)).updateState(orderId, newState);
+        verify(orderRepository, times(1)).findByOrderId(orderId);
+
+        // Verify if checkOrderState is called
+        verify(mockOrder, times(1)).checkOrderState(newState);
+    }
+
+    @Test
+    @DisplayName("주문 상태 업데이트 실패 시 예외를 발생시킨다.")
+    void updateOrderState_Failure() {
+        // Given
+        Long orderId = 1L;
+        OrderStateType newState = OrderStateType.PAYED;
+
+        when(orderRepository.updateState(orderId, newState)).thenReturn(0);
+
+        // When & Then
+        assertThatThrownBy(() -> orderService.updateOrderState(orderId, newState))
+                .isInstanceOf(OrderException.class)
+                .hasMessage(OrderErrorCode.FAIL_UPDATE_STATUS.getMessage());
+
+        verify(orderRepository, times(1)).updateState(orderId, newState);
+        verify(orderRepository, never()).findByOrderId(orderId);
+    }
 
 }
