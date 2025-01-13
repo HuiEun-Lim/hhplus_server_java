@@ -1,9 +1,6 @@
 package kr.hhplus.be.server.domain.coupon.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import kr.hhplus.be.server.domain.BaseEntity;
 import kr.hhplus.be.server.domain.coupon.enums.CouponStateType;
 import kr.hhplus.be.server.support.exception.coupon.CouponErrorCode;
@@ -27,6 +24,7 @@ public class CouponIssuance extends BaseEntity {
 
     private Long userId;
     private Long couponId;
+    @Enumerated(EnumType.STRING)
     private CouponStateType couponState;
     private LocalDateTime useDate;
 

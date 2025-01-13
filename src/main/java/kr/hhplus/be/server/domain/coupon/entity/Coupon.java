@@ -1,9 +1,6 @@
 package kr.hhplus.be.server.domain.coupon.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import kr.hhplus.be.server.domain.BaseEntity;
 import kr.hhplus.be.server.domain.coupon.enums.DiscountType;
 import kr.hhplus.be.server.support.exception.coupon.CouponErrorCode;
@@ -26,6 +23,7 @@ public class Coupon extends BaseEntity {
     private Long couponId;
 
     private String couponName;
+    @Enumerated(EnumType.STRING)
     private DiscountType discountType;
     private Long discountAmount;
     private Long maxDiscountAmount;

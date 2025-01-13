@@ -47,7 +47,7 @@ class ProductServiceTest {
         when(productRepository.findByProductIdWithLock(productId)).thenReturn(mockProduct);
         when(stockRepository.findByProductId(productId)).thenReturn(mockStock);
 
-        ProductResult result = productService.getProductByProductIdWithLock(productId);
+        ProductResult result = productService.getProductByProductId(productId);
 
         // Then
         assertNotNull(result);

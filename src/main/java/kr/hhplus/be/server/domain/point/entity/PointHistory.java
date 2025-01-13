@@ -1,9 +1,6 @@
 package kr.hhplus.be.server.domain.point.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import kr.hhplus.be.server.domain.BaseEntity;
 import kr.hhplus.be.server.domain.point.enums.TransactionType;
 import lombok.AllArgsConstructor;
@@ -23,6 +20,7 @@ public class PointHistory extends BaseEntity {
 
     private Long userId;
     private Long amount;
+    @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
 
     public static PointHistory create(Long userId, Long amount, TransactionType transactionType){

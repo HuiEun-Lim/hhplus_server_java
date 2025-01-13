@@ -82,4 +82,18 @@ public class CouponService {
 
         return CouponIssuanceResult.toResult(issuedCoupon, coupon);
     }
+
+    @Transactional(readOnly = true)
+    public CouponIssuanceResult getIssuedCouponInfoByIssuanceId(Long issuanceId) {
+        CouponIssuance issuedCoupon = couponIssuanceRepository.findByIssuanceIdWithLock(issuanceId);
+        if (issuedCoupon == null) {
+            throw new CouponException(CouponErrorCode.ISSUED_COUPON_IS_NULL);
+        }
+        Coupon coupon = couponRepository.findByCouponId(issuedCoupon.getCouponId());
+        if (coupon == null) {
+            throw new CouponException(CouponErrorCode.COUPON_IS_NULL);
+        }
+
+        return CouponIssuanceResult.toResult(issuedCoupon, coupon);
+    }
 }

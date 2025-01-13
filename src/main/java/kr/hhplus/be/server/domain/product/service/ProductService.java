@@ -25,8 +25,8 @@ public class ProductService {
     private final StockRepository  stockRepository;
 
     @Transactional(readOnly = true)
-    public ProductResult getProductByProductIdWithLock(Long productId){
-        Product product = productRepository.findByProductIdWithLock(productId);
+    public ProductResult getProductByProductId(Long productId){
+        Product product = productRepository.findByProductId(productId);
         if(product == null){
             throw new ProductException(ProductErrorCode.PRODUCT_IS_NULL);
         }
