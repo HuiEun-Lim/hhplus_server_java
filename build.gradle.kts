@@ -2,6 +2,7 @@ plugins {
 	java
 	id("org.springframework.boot") version "3.4.1"
 	id("io.spring.dependency-management") version "1.1.7"
+	kotlin("jvm")
 }
 
 fun getGitHash(): String {
@@ -34,6 +35,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
 
     // DB
 	runtimeOnly("com.mysql:mysql-connector-j")
@@ -48,6 +50,13 @@ dependencies {
 	// lombok
 	compileOnly ("org.projectlombok:lombok")
 	annotationProcessor ("org.projectlombok:lombok")
+	implementation(kotlin("stdlib-jdk8"))
+
+	// QueryDSL
+	implementation ("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+	annotationProcessor ("com.querydsl:querydsl-apt:5.0.0:jakarta")
+	annotationProcessor ("jakarta.annotation:jakarta.annotation-api")
+	annotationProcessor ("jakarta.persistence:jakarta.persistence-api")
 }
 
 tasks.withType<Test> {

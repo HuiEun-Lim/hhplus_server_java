@@ -1,12 +1,11 @@
 package kr.hhplus.be.server.interfaces.web.product.dto.response;
 
-import kr.hhplus.be.server.domain.product.Product;
+import kr.hhplus.be.server.interfaces.web.product.model.ProductInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 @Getter
 @Builder
@@ -14,5 +13,5 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductResponse {
     private String message;
-    private List<Product> data;
+    private Page<ProductInfo> data;
 }

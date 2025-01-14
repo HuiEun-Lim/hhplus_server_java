@@ -13,4 +13,9 @@ public class CouponRequest {
 
     @NotNull
     private Long couponId;
+
+    public CouponRequest(Long userId, Long couponId) {
+        this.userId = userId;
+        this.couponId = couponId;
+    }
 }
