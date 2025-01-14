@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PointResponse {
-    private String message;
-    private UserPointInfo data;
+    private UserPointInfo pointInfo;
 }

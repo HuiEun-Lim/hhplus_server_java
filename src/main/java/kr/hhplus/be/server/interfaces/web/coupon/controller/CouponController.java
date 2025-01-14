@@ -26,7 +26,7 @@ public class CouponController {
     @PostMapping
     public ApiResponse<CouponIssueResponse> couponIssue(@RequestBody CouponRequest request) {
         CouponIssuanceFacadeResponse result = couponFacade.issueCoupon(request.getUserId(), request.getCouponId());
-        return ApiResponse.ok(new CouponIssueResponse("쿠폰 발급 성공", IssuedCouponInfo.toInfo(result)));
+        return ApiResponse.ok(new CouponIssueResponse(IssuedCouponInfo.toInfo(result)));
     }
 
     @Operation(summary = "사용자 쿠폰 발급 목록 조회", description = "사용자가 발급 받은 쿠폰 목록을 조회한다.")
@@ -39,7 +39,7 @@ public class CouponController {
                 .map(IssuedCouponInfo::toInfo)
                 .toList();
 
-        return ApiResponse.ok(new UserCouponResponse("조회 성공", infoList));
+        return ApiResponse.ok(new UserCouponResponse(infoList));
     }
 
 }

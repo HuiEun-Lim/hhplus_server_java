@@ -54,7 +54,8 @@ class PointControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/points")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.pointInfo.amount").value(amount));
 
     }
 
@@ -77,7 +78,8 @@ class PointControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/points")
                 .param("userId", String.valueOf(userId))
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.pointInfo.amount").value(1000L));
 
     }
 

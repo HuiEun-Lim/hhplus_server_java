@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CouponIssueResponse {
-    private String message;
-    private IssuedCouponInfo data;
+    private IssuedCouponInfo issuedCoupon;
 }

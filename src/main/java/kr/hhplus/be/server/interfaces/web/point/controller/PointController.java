@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.hhplus.be.server.application.point.dto.PointFacadeResponse;
 import kr.hhplus.be.server.application.point.facade.PointFacade;
-import kr.hhplus.be.server.domain.point.entity.UserPoint;
 import kr.hhplus.be.server.interfaces.web.ApiResponse;
 import kr.hhplus.be.server.interfaces.web.point.dto.request.PointRequest;
 import kr.hhplus.be.server.interfaces.web.point.dto.response.PointResponse;
@@ -24,13 +23,13 @@ public class PointController {
     @PostMapping
     public ApiResponse<PointResponse> chargePoint(@RequestBody PointRequest request) {
         PointFacadeResponse facadeResponse = pointFacade.chargeUserPoint(request.getUserId(), request.getChargeAmount());
-        return ApiResponse.ok(new PointResponse("충전 성공", UserPointInfo.toData(facadeResponse)));
+        return ApiResponse.ok(new PointResponse(UserPointInfo.toData(facadeResponse)));
     }
 
     @Operation(summary = "사용자 포인트 조회", description = "사용자의 포인트를 조회한다.")
     @GetMapping
     public ApiResponse<PointResponse> getUserPoint(@RequestParam Long userId) {
         PointFacadeResponse facadeResponse = pointFacade.getUserPoint(userId);
-        return ApiResponse.ok(new PointResponse("충전 이력 조회 성공", UserPointInfo.toData(facadeResponse)));
+        return ApiResponse.ok(new PointResponse(UserPointInfo.toData(facadeResponse)));
     }
 }
