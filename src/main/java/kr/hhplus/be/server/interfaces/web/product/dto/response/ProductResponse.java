@@ -12,6 +12,5 @@ import org.springframework.data.domain.Page;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductResponse {
-    private String message;
-    private Page<ProductInfo> data;
+    private Page<ProductInfo> products;
 }
