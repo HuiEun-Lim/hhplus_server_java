@@ -9,8 +9,8 @@ import kr.hhplus.be.server.domain.order.entity.OrderProduct;
 import kr.hhplus.be.server.domain.order.enums.OrderStateType;
 import kr.hhplus.be.server.domain.order.repository.OrderProductRepository;
 import kr.hhplus.be.server.domain.order.repository.OrderRepository;
+import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.order.OrderErrorCode;
-import kr.hhplus.be.server.support.exception.order.OrderException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +30,7 @@ public class OrderService {
     public OrderResult findOrderInfo(Long orderId) {
         Order order = orderRepository.findByOrderId(orderId);
         if (order == null) {
-            throw new OrderException(OrderErrorCode.INVALID_ORDER_ID);
+            throw new CommonException(OrderErrorCode.INVALID_ORDER_ID);
         }
 
         List<OrderProduct> productList = orderProductRepository.findByOrderId(orderId);
@@ -69,7 +69,7 @@ public class OrderService {
     public OrderResult findOrderInfoNoProduct(Long orderId) {
         Order order = orderRepository.findByOrderId(orderId);
         if (order == null) {
-            throw new OrderException(OrderErrorCode.INVALID_ORDER_ID);
+            throw new CommonException(OrderErrorCode.INVALID_ORDER_ID);
         }
 
         return OrderResult.toResult(order);
@@ -78,7 +78,7 @@ public class OrderService {
     @Transactional
     public void updateOrderState(Long orderId, OrderStateType stateType) {
         if(orderRepository.updateState(orderId, stateType) < 1) {
-            throw new OrderException(OrderErrorCode.FAIL_UPDATE_STATUS);
+            throw new CommonException(OrderErrorCode.FAIL_UPDATE_STATUS);
         }
         Order order = orderRepository.findByOrderId(orderId);
         order.checkOrderState(stateType);

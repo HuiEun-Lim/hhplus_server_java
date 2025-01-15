@@ -9,8 +9,8 @@ import kr.hhplus.be.server.domain.order.entity.OrderProduct;
 import kr.hhplus.be.server.domain.order.enums.OrderStateType;
 import kr.hhplus.be.server.domain.order.repository.OrderProductRepository;
 import kr.hhplus.be.server.domain.order.repository.OrderRepository;
+import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.order.OrderErrorCode;
-import kr.hhplus.be.server.support.exception.order.OrderException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -75,7 +75,7 @@ class OrderServiceTest {
 
         // When & Then
         assertThatThrownBy(() -> orderService.findOrderInfo(orderId))
-                .isInstanceOf(OrderException.class)
+                .isInstanceOf(CommonException.class)
                 .hasMessage(OrderErrorCode.INVALID_ORDER_ID.getMessage());
 
         verify(orderRepository, times(1)).findByOrderId(orderId);
@@ -195,7 +195,7 @@ class OrderServiceTest {
 
         // When & Then
         assertThatThrownBy(() -> orderService.updateOrderState(orderId, newState))
-                .isInstanceOf(OrderException.class)
+                .isInstanceOf(CommonException.class)
                 .hasMessage(OrderErrorCode.FAIL_UPDATE_STATUS.getMessage());
 
         verify(orderRepository, times(1)).updateState(orderId, newState);

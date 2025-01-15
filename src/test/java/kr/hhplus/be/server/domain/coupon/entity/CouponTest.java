@@ -1,8 +1,8 @@
 package kr.hhplus.be.server.domain.coupon.entity;
 
 import kr.hhplus.be.server.domain.coupon.enums.DiscountType;
+import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.coupon.CouponErrorCode;
-import kr.hhplus.be.server.support.exception.coupon.CouponException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +21,7 @@ class CouponTest {
 
         // when & then
         assertThatThrownBy(coupon::checkExpiryDate)
-                .isInstanceOf(CouponException.class)
+                .isInstanceOf(CommonException.class)
                 .hasMessage(CouponErrorCode.EXPIRY_COUPON.getMessage());
     }
 
@@ -44,7 +44,7 @@ class CouponTest {
 
         // when & then
         assertThatThrownBy(() -> coupon.checkIssuedCount(50L))
-                .isInstanceOf(CouponException.class)
+                .isInstanceOf(CommonException.class)
                 .hasMessage(CouponErrorCode.MAX_ISSUED_COUPON.getMessage());
     }
 

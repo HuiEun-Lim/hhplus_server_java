@@ -3,8 +3,8 @@ package kr.hhplus.be.server.domain.coupon.entity;
 import jakarta.persistence.*;
 import kr.hhplus.be.server.domain.BaseEntity;
 import kr.hhplus.be.server.domain.coupon.enums.CouponStateType;
+import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.coupon.CouponErrorCode;
-import kr.hhplus.be.server.support.exception.coupon.CouponException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,7 +36,7 @@ public class CouponIssuance extends BaseEntity {
 
     public void checkCouponState(){
         if(this.couponState.equals(CouponStateType.USE)) {
-            throw new CouponException(CouponErrorCode.ALREADY_USED_COUPON);
+            throw new CommonException(CouponErrorCode.ALREADY_USED_COUPON);
         }
     }
 }

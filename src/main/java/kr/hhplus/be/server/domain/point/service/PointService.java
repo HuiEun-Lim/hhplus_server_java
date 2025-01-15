@@ -1,13 +1,11 @@
 package kr.hhplus.be.server.domain.point.service;
 
-import kr.hhplus.be.server.domain.point.enums.TransactionType;
 import kr.hhplus.be.server.domain.point.dto.UserPointResult;
 import kr.hhplus.be.server.domain.point.entity.PointHistory;
 import kr.hhplus.be.server.domain.point.entity.UserPoint;
+import kr.hhplus.be.server.domain.point.enums.TransactionType;
 import kr.hhplus.be.server.domain.point.repository.PointHistoryRepository;
 import kr.hhplus.be.server.domain.point.repository.UserPointRepository;
-import kr.hhplus.be.server.support.exception.point.PointErrorCode;
-import kr.hhplus.be.server.support.exception.point.PointException;
 import kr.hhplus.be.server.support.util.point.PointValidationUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;

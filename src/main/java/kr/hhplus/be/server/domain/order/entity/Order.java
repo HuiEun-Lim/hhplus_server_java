@@ -4,8 +4,8 @@ package kr.hhplus.be.server.domain.order.entity;
 import jakarta.persistence.*;
 import kr.hhplus.be.server.domain.BaseEntity;
 import kr.hhplus.be.server.domain.order.enums.OrderStateType;
+import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.order.OrderErrorCode;
-import kr.hhplus.be.server.support.exception.order.OrderException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,7 +41,7 @@ public class Order extends BaseEntity {
 
     public void checkOrderState(OrderStateType orderState){
         if(!orderState.equals(this.orderState)){
-            throw new OrderException(OrderErrorCode.FAIL_UPDATE_STATUS);
+            throw new CommonException(OrderErrorCode.FAIL_UPDATE_STATUS);
         }
     }
 

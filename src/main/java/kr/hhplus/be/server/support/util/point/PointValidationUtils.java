@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.support.util.point;
 
+import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.point.PointErrorCode;
-import kr.hhplus.be.server.support.exception.point.PointException;
 
 public class PointValidationUtils {
 
@@ -10,16 +10,16 @@ public class PointValidationUtils {
      */
     public static void validatePointAmount(Long amount) {
         if (amount < 0) {
-            throw new PointException(PointErrorCode.CHARGE_POINT_MINUS);
+            throw new CommonException(PointErrorCode.CHARGE_POINT_MINUS);
         }
         if (amount == 0) {
-            throw new PointException(PointErrorCode.CHARGE_POINT_ZERO);
+            throw new CommonException(PointErrorCode.CHARGE_POINT_ZERO);
         }
         if (amount < 10) {
-            throw new PointException(PointErrorCode.CHARGE_POINT_UNDER_TEN);
+            throw new CommonException(PointErrorCode.CHARGE_POINT_UNDER_TEN);
         }
         if (amount % 10 != 0) {
-            throw new PointException(PointErrorCode.CHARGE_POINT_UNIT_TEN);
+            throw new CommonException(PointErrorCode.CHARGE_POINT_UNIT_TEN);
         }
     }
 }

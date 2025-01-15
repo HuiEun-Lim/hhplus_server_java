@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.domain.point.entity;
 
+import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.point.PointErrorCode;
-import kr.hhplus.be.server.support.exception.point.PointException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -32,7 +32,7 @@ class UserPointTest {
 
         // when & then
         assertThatThrownBy(() -> userPoint.decrease(userAmount))
-                .isInstanceOf(PointException.class)
+                .isInstanceOf(CommonException.class)
                 .hasMessage(PointErrorCode.USE_POINT_LACK.getMessage());
     }
 

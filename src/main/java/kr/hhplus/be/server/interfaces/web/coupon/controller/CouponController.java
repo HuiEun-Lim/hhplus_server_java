@@ -10,10 +10,12 @@ import kr.hhplus.be.server.interfaces.web.coupon.dto.response.CouponIssueRespons
 import kr.hhplus.be.server.interfaces.web.coupon.dto.response.UserCouponResponse;
 import kr.hhplus.be.server.interfaces.web.coupon.model.IssuedCouponInfo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @Tag(name = "쿠폰 관리", description = "쿠폰 관리 API")
 @RequiredArgsConstructor
 @RestController

@@ -9,8 +9,8 @@ import kr.hhplus.be.server.domain.payment.dto.PaymentResult;
 import kr.hhplus.be.server.domain.payment.dto.PaymentServiceRequest;
 import kr.hhplus.be.server.domain.payment.enums.PaymentStatusType;
 import kr.hhplus.be.server.domain.payment.service.PaymentService;
+import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.payment.PaymentErrorCode;
-import kr.hhplus.be.server.support.exception.payment.PaymentException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -95,7 +95,7 @@ class PaymentFacadeTest {
 
         // When & Then
         assertThatThrownBy(() -> paymentFacade.createPayment(request))
-                .isInstanceOf(PaymentException.class)
+                .isInstanceOf(CommonException.class)
                 .hasMessage(PaymentErrorCode.INVALID_ORDER_STATE.getMessage());
 
         verify(orderService, times(1)).findOrderInfoNoProduct(orderId);

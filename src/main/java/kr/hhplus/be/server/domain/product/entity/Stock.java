@@ -5,8 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import kr.hhplus.be.server.domain.BaseEntity;
+import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.product.ProductErrorCode;
-import kr.hhplus.be.server.support.exception.product.ProductException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,7 +27,7 @@ public class Stock extends BaseEntity {
 
     public void decreaseQuantity(Long quantity){
         if(this.quantity < quantity){
-            throw new ProductException(ProductErrorCode.STOCK_NOT_ENOUGH);
+            throw new CommonException(ProductErrorCode.STOCK_NOT_ENOUGH);
         }
         this.quantity -= quantity;
     }

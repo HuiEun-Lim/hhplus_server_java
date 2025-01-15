@@ -8,8 +8,8 @@ import kr.hhplus.be.server.domain.coupon.enums.CouponStateType;
 import kr.hhplus.be.server.domain.coupon.enums.DiscountType;
 import kr.hhplus.be.server.domain.coupon.repository.CouponIssuanceRepository;
 import kr.hhplus.be.server.domain.coupon.repository.CouponRepository;
+import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.coupon.CouponErrorCode;
-import kr.hhplus.be.server.support.exception.coupon.CouponException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -67,7 +67,7 @@ class CouponServiceTest {
 
         // when & then
         assertThatThrownBy(() -> couponService.getCouponInfoByCouponId(couponId))
-                .isInstanceOf(CouponException.class)
+                .isInstanceOf(CommonException.class)
                 .hasMessage(CouponErrorCode.COUPON_IS_NULL.getMessage());
         verify(couponRepository, times(1)).findByCouponId(couponId);
         verify(couponIssuanceRepository, never()).countByCouponId(anyLong());
@@ -111,7 +111,7 @@ class CouponServiceTest {
 
         // then
         assertThatThrownBy(() -> couponService.issueCoupon(userId, couponId))
-                .isInstanceOf(CouponException.class)
+                .isInstanceOf(CommonException.class)
                 .hasMessage(CouponErrorCode.COUPON_IS_NULL.getMessage());
         verify(couponRepository, times(1)).findByCouponIdWithLock(couponId);
         verify(couponIssuanceRepository, never()).countByCouponId(anyLong());
@@ -184,7 +184,7 @@ class CouponServiceTest {
 
         // When & Then
         assertThatThrownBy(() -> couponService.useUserIssuedCoupon(userId, couponId))
-                .isInstanceOf(CouponException.class)
+                .isInstanceOf(CommonException.class)
                 .hasMessage(CouponErrorCode.COUPON_IS_NULL.getMessage());
 
         verify(couponRepository, times(1)).findByCouponIdWithLock(couponId);
@@ -205,7 +205,7 @@ class CouponServiceTest {
 
         // When & Then
         assertThatThrownBy(() -> couponService.useUserIssuedCoupon(userId, couponId))
-                .isInstanceOf(CouponException.class)
+                .isInstanceOf(CommonException.class)
                 .hasMessage(CouponErrorCode.ISSUED_COUPON_IS_NULL.getMessage());
 
         verify(couponRepository, times(1)).findByCouponIdWithLock(couponId);

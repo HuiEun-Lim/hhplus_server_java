@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.domain.product.entity;
 
+import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.product.ProductErrorCode;
-import kr.hhplus.be.server.support.exception.product.ProductException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +31,7 @@ class StockTest {
 
         // When & Then
         assertThatThrownBy(() -> stock.decreaseQuantity(21L))
-                .isInstanceOf(ProductException.class)
+                .isInstanceOf(CommonException.class)
                 .hasMessage(ProductErrorCode.STOCK_NOT_ENOUGH.getMessage());
     }
 

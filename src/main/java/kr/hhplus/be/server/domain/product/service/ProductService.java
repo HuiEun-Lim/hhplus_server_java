@@ -5,8 +5,8 @@ import kr.hhplus.be.server.domain.product.entity.Product;
 import kr.hhplus.be.server.domain.product.entity.Stock;
 import kr.hhplus.be.server.domain.product.repository.ProductRepository;
 import kr.hhplus.be.server.domain.product.repository.StockRepository;
+import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.product.ProductErrorCode;
-import kr.hhplus.be.server.support.exception.product.ProductException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -28,7 +28,7 @@ public class ProductService {
     public ProductResult getProductByProductId(Long productId){
         Product product = productRepository.findByProductId(productId);
         if(product == null){
-            throw new ProductException(ProductErrorCode.PRODUCT_IS_NULL);
+            throw new CommonException(ProductErrorCode.PRODUCT_IS_NULL);
         }
 
         Stock stock = stockRepository.findByProductId(productId);
