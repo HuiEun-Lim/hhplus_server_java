@@ -15,6 +15,7 @@ import kr.hhplus.be.server.domain.product.dto.ProductResult;
 import kr.hhplus.be.server.domain.product.service.ProductService;
 import kr.hhplus.be.server.domain.user.dto.UserResult;
 import kr.hhplus.be.server.domain.user.service.UserService;
+import kr.hhplus.be.server.infrastructure.external.OrderEventDataPlatformSender;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Component;
@@ -31,6 +32,7 @@ public class OrderFacade {
     private final UserService userService;
     private final ProductService productService;
     private final CouponService couponService;
+    private final OrderEventDataPlatformSender orderDataPlatformSender;
 
     @Transactional
     public OrderFacadeResponse createOrder(OrderFacadeRequest request) {
@@ -65,7 +67,10 @@ public class OrderFacade {
         OrderServiceRequest orderServiceRequest = new OrderServiceRequest(userId, issuedCouponId, totalPrice, discountPrice, (totalPrice - discountPrice), OrderStateType.ORDERED);
         OrderResult orderResult = orderService.createOrder(orderServiceRequest);
         List<OrderItem> orderProductResult = orderService.createOrderProduct(orderItems);
+        orderResult.setItems(orderProductResult);
 
-        return OrderFacadeResponse.toResponse(orderResult, orderProductResult);
+        orderDataPlatformSender.send(orderResult);
+
+        return OrderFacadeResponse.toResponse(orderResult);
     }
 }

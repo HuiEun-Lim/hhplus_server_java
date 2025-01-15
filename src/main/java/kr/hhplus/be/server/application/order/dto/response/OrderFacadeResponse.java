@@ -20,7 +20,7 @@ public class OrderFacadeResponse {
     private OrderStateType orderState;
     private List<OrderItem> items;
 
-    public static OrderFacadeResponse toResponse(OrderResult order, List<OrderItem> orderItems) {
+    public static OrderFacadeResponse toResponse(OrderResult order) {
         return OrderFacadeResponse.builder()
                 .orderId(order.getOrderId())
                 .userId(order.getUserId())
@@ -29,7 +29,7 @@ public class OrderFacadeResponse {
                 .discountPrice(order.getDiscountPrice())
                 .salePrice(order.getSalePrice())
                 .orderState(order.getOrderState())
-                .items(orderItems)
+                .items(order.getItems())
                 .build();
     }
 }
