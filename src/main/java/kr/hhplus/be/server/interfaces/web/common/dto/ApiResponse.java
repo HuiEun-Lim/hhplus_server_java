@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.interfaces.web;
+package kr.hhplus.be.server.interfaces.web.common.dto;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

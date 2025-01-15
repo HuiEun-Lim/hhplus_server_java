@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.hhplus.be.server.application.coupon.dto.CouponIssuanceFacadeResponse;
 import kr.hhplus.be.server.application.coupon.facade.CouponFacade;
-import kr.hhplus.be.server.interfaces.web.ApiResponse;
+import kr.hhplus.be.server.interfaces.web.common.dto.ApiResponse;
 import kr.hhplus.be.server.interfaces.web.coupon.dto.request.CouponRequest;
 import kr.hhplus.be.server.interfaces.web.coupon.dto.response.CouponIssueResponse;
 import kr.hhplus.be.server.interfaces.web.coupon.dto.response.UserCouponResponse;

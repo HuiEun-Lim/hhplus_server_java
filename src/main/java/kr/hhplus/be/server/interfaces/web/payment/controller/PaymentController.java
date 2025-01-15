@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.hhplus.be.server.application.payment.dto.response.PaymentFacadeResponse;
 import kr.hhplus.be.server.application.payment.facade.PaymentFacade;
-import kr.hhplus.be.server.interfaces.web.ApiResponse;
+import kr.hhplus.be.server.interfaces.web.common.dto.ApiResponse;
 import kr.hhplus.be.server.interfaces.web.payment.dto.request.PaymentRequest;
 import kr.hhplus.be.server.interfaces.web.payment.dto.response.PaymentResponse;
 import kr.hhplus.be.server.interfaces.web.payment.model.PaymentInfo;

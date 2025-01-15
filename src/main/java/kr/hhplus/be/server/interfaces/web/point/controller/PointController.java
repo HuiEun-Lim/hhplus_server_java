@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.hhplus.be.server.application.point.dto.PointFacadeResponse;
 import kr.hhplus.be.server.application.point.facade.PointFacade;
-import kr.hhplus.be.server.interfaces.web.ApiResponse;
+import kr.hhplus.be.server.interfaces.web.common.dto.ApiResponse;
 import kr.hhplus.be.server.interfaces.web.point.dto.request.PointRequest;
 import kr.hhplus.be.server.interfaces.web.point.dto.response.PointResponse;
 import kr.hhplus.be.server.interfaces.web.point.model.UserPointInfo;

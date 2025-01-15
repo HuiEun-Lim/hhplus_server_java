@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.hhplus.be.server.application.product.dto.ProductFacadeResponse;
 import kr.hhplus.be.server.application.product.facade.ProductFacade;
-import kr.hhplus.be.server.interfaces.web.ApiResponse;
+import kr.hhplus.be.server.interfaces.web.common.dto.ApiResponse;
 import kr.hhplus.be.server.interfaces.web.product.dto.response.ProductResponse;
 import kr.hhplus.be.server.interfaces.web.product.dto.response.TopProductResponse;
 import kr.hhplus.be.server.interfaces.web.product.model.ProductInfo;
