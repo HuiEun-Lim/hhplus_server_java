@@ -28,4 +28,8 @@ public class ApiResponse<T> {
     public static <T> ApiResponse<T> ok(T data) {
         return of(HttpStatus.OK, data);
     }
+
+    public static <T> ApiResponse<T> error(String message) {
+        return of(HttpStatus.BAD_REQUEST, message, null);
+    }
 }
