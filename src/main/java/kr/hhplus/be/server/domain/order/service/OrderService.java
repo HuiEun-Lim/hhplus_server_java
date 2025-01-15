@@ -80,8 +80,5 @@ public class OrderService {
         if(orderRepository.updateState(orderId, stateType) < 1) {
             throw new CommonException(OrderErrorCode.FAIL_UPDATE_STATUS);
         }
-        Order order = orderRepository.findByOrderId(orderId);
-        order.checkOrderState(stateType);
-
     }
 }

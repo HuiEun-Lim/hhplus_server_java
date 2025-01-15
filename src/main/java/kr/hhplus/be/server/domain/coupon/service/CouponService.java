@@ -65,7 +65,7 @@ public class CouponService {
 
     @Transactional
     public CouponIssuanceResult useUserIssuedCoupon(Long userId, Long couponId) {
-        Coupon coupon = couponRepository.findByCouponIdWithLock(couponId);
+        Coupon coupon = couponRepository.findByCouponId(couponId);
         if (coupon == null) {
             throw new CommonException(CouponErrorCode.COUPON_IS_NULL);
         }

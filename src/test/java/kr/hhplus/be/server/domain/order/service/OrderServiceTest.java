@@ -169,19 +169,12 @@ class OrderServiceTest {
                 .orderId(orderId)
                 .orderState(OrderStateType.ORDERED)
                 .build());
-        doNothing().when(mockOrder).checkOrderState(newState);
-
-        when(orderRepository.findByOrderId(orderId)).thenReturn(mockOrder);
 
         // When
         orderService.updateOrderState(orderId, newState);
 
         // Then
         verify(orderRepository, times(1)).updateState(orderId, newState);
-        verify(orderRepository, times(1)).findByOrderId(orderId);
-
-        // Verify if checkOrderState is called
-        verify(mockOrder, times(1)).checkOrderState(newState);
     }
 
     @Test

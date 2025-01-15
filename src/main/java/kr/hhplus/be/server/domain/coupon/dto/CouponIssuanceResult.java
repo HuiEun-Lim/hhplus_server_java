@@ -30,6 +30,7 @@ public class CouponIssuanceResult {
                 .couponId(issuance.getCouponId())
                 .couponName(coupon.getCouponName())
                 .discountType(coupon.getDiscountType())
+                .discountAmount(coupon.getDiscountAmount())
                 .maxDiscountAmount(coupon.getMaxDiscountAmount())
                 .couponState(issuance.getCouponState())
                 .useDate(issuance.getUseDate())

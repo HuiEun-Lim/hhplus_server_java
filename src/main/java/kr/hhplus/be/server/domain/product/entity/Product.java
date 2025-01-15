@@ -23,4 +23,11 @@ public class Product extends BaseEntity {
     private String productName;
     private Long price;
 
+    public static Product create(String productName, Long price){
+        return Product.builder()
+                .productName(productName)
+                .price(price)
+                .build();
+    }
+
 }

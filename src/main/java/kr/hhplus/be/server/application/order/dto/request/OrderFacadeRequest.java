@@ -17,4 +17,12 @@ public class OrderFacadeRequest {
     private Long issuedCouponId;
     private List<OrderProductDto> productList;
 
+    public static OrderFacadeRequest create(Long userId, Long issuedCouponId, List<OrderProductDto> productList){
+        return OrderFacadeRequest.builder()
+                .userId(userId)
+                .issuedCouponId(issuedCouponId)
+                .productList(productList)
+                .build();
+    }
+
 }

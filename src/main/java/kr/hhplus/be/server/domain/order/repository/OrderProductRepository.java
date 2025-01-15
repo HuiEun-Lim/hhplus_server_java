@@ -9,4 +9,5 @@ public interface OrderProductRepository {
     List<OrderProduct> findByOrderId(Long orderId);
     OrderProduct save(OrderProduct product);
     List<TopOrderProduct> findTop5OrderProducts();
+
 }
