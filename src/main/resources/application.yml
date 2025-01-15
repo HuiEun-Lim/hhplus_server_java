@@ -29,3 +29,8 @@ spring:
     url: jdbc:mysql://localhost:3306/hhplus?characterEncoding=UTF-8&serverTimezone=UTC
     username: application
     password: application
+
+---
+logging:
+  level:
+    kr.hhplus.be.server: INFO
