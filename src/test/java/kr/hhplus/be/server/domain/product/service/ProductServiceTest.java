@@ -36,7 +36,7 @@ class ProductServiceTest {
 
     @Test
     @DisplayName("상품 ID로 상품 정보를 조회하고 재고 정보를 포함한다.")
-    void getProductByProductIdWithLock() {
+    void getProductByProductId() {
         // Given
         Long productId = 1L;
 
@@ -44,7 +44,7 @@ class ProductServiceTest {
         Stock mockStock = new Stock(1L, productId, 50L);
 
         // When
-        when(productRepository.findByProductIdWithLock(productId)).thenReturn(mockProduct);
+        when(productRepository.findByProductId(productId)).thenReturn(mockProduct);
         when(stockRepository.findByProductId(productId)).thenReturn(mockStock);
 
         ProductResult result = productService.getProductByProductId(productId);
@@ -55,7 +55,7 @@ class ProductServiceTest {
         assertEquals("라이언 코치님의 피드백", result.getProductName());
         assertEquals(50, result.getStock());
 
-        verify(productRepository, times(1)).findByProductIdWithLock(productId);
+        verify(productRepository, times(1)).findByProductId(productId);
         verify(stockRepository, times(1)).findByProductId(productId);
     }
 
