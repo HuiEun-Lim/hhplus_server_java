@@ -57,7 +57,7 @@ public class OrderFacade {
         if(ObjectUtils.isNotEmpty(issuedCouponId)) { // 사용할 쿠폰 존재
             CouponIssuanceResult couponResult = couponService.useUserIssuedCoupon(userId, issuedCouponId);
             if(couponResult.getDiscountType().equals(DiscountType.AMOUNT)) { // 정액 할인
-                discountPrice = totalPrice - couponResult.getDiscountAmount();
+                discountPrice = couponResult.getDiscountAmount();
             } else { // 정률 할인
                 Long tempDiscountPrice = couponResult.getDiscountAmount() * totalPrice / 100;
                 discountPrice = (tempDiscountPrice < couponResult.getMaxDiscountAmount()) ? tempDiscountPrice : couponResult.getMaxDiscountAmount();

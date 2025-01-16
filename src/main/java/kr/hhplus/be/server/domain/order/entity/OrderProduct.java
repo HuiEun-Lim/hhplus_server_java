@@ -26,4 +26,12 @@ public class OrderProduct extends BaseEntity {
     private Long productPrice;
     private Long quantity;
     private Long totalPrice;
+
+    public static OrderProduct create(Long orderId, Long productId, Long quantity) {
+        return OrderProduct.builder()
+                .orderId(orderId)
+                .productId(productId)
+                .quantity(quantity)
+                .build();
+    }
 }

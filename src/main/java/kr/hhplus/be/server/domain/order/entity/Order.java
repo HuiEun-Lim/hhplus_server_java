@@ -39,6 +39,17 @@ public class Order extends BaseEntity {
         this.orderState = orderState;
     }
 
+    public static Order create(Long userId, Long issuanceId, Long originPrice, Long discountPrice, Long salePrice, OrderStateType orderState) {
+        return Order.builder()
+                .userId(userId)
+                .issuanceId(issuanceId)
+                .originPrice(originPrice)
+                .discountPrice(discountPrice)
+                .salePrice(salePrice)
+                .orderState(orderState)
+                .build();
+    }
+
     public void checkOrderState(OrderStateType orderState){
         if(!orderState.equals(this.orderState)){
             throw new CommonException(OrderErrorCode.FAIL_UPDATE_STATUS);
