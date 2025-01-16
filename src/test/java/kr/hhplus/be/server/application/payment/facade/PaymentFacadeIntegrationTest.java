@@ -7,6 +7,8 @@ import kr.hhplus.be.server.domain.order.entity.Order;
 import kr.hhplus.be.server.domain.order.enums.OrderStateType;
 import kr.hhplus.be.server.domain.order.repository.OrderRepository;
 import kr.hhplus.be.server.domain.payment.enums.PaymentStatusType;
+import kr.hhplus.be.server.domain.point.entity.UserPoint;
+import kr.hhplus.be.server.domain.point.repository.UserPointRepository;
 import kr.hhplus.be.server.domain.user.entity.User;
 import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.payment.PaymentErrorCode;
@@ -25,11 +27,16 @@ class PaymentFacadeIntegrationTest extends IntegrationTestSupport {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private UserPointRepository userPointRepository;
+
     @Test
     @DisplayName("주문 결제를 성공적으로 생성한다.")
     void createPaymentSuccessfully() {
         // Given
         User user = userRepository.save(User.create("임흐이은"));
+
+        userPointRepository.save(UserPoint.create(user.getUserId(), 70000L));
 
         Order order = orderRepository.save(Order.create(
                 user.getUserId(), null, 13000L, 0L, 13000L, OrderStateType.ORDERED));
@@ -44,6 +51,9 @@ class PaymentFacadeIntegrationTest extends IntegrationTestSupport {
         assertThat(response.getOrderId()).isEqualTo(order.getOrderId());
         assertThat(response.getPayAmt()).isEqualTo(order.getSalePrice());
         assertThat(response.getPaymentStatus()).isEqualTo(PaymentStatusType.PAYED);
+
+        UserPoint userPoint = userPointRepository.findByUserId(user.getUserId());
+        assertThat(userPoint.getAmount()).isEqualTo(57000L);
     }
 
     @Test

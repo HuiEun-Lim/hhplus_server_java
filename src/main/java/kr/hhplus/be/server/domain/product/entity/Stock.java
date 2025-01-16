@@ -31,4 +31,8 @@ public class Stock extends BaseEntity {
         }
         this.quantity -= quantity;
     }
+
+    public static Stock create(Long productId, Long quantity){
+        return Stock.builder().productId(productId).quantity(quantity).build();
+    }
 }

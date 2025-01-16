@@ -67,7 +67,7 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public OrderResult findOrderInfoNoProduct(Long orderId) {
-        Order order = orderRepository.findByOrderId(orderId);
+        Order order = orderRepository.findByOrderIdWithLock(orderId);
         if (order == null) {
             throw new CommonException(OrderErrorCode.INVALID_ORDER_ID);
         }

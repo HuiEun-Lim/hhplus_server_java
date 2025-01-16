@@ -45,7 +45,7 @@ class ProductServiceTest {
 
         // When
         when(productRepository.findByProductId(productId)).thenReturn(mockProduct);
-        when(stockRepository.findByProductId(productId)).thenReturn(mockStock);
+        when(stockRepository.findByProductIdWithLock(productId)).thenReturn(mockStock);
 
         ProductResult result = productService.getProductByProductId(productId);
 
@@ -56,7 +56,7 @@ class ProductServiceTest {
         assertEquals(50, result.getStock());
 
         verify(productRepository, times(1)).findByProductId(productId);
-        verify(stockRepository, times(1)).findByProductId(productId);
+        verify(stockRepository, times(1)).findByProductIdWithLock(productId);
     }
 
     @Test

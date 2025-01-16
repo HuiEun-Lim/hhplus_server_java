@@ -53,6 +53,27 @@ public class PointService {
         return UserPointResult.toResult(userPoint);
     }
 
+    @Transactional
+    public UserPointResult useUserPoint(Long userId, Long amount) {
+        PointValidationUtils.validatePointAmount(amount);
+
+        UserPoint userPoint = userPointRepository.findByUserId(userId);
+
+        if(ObjectUtils.isEmpty(userPoint)){
+            throw new CommonException(PointErrorCode.INVALID_USER_POINT);
+        }
+
+        userPoint.decrease(amount);
+
+        try {
+            userPointRepository.save(userPoint);
+        } catch (OptimisticLockException e) {
+            throw new CommonException(PointErrorCode.USER_POINT_FAIL);
+        }
+
+        return UserPointResult.toResult(userPoint);
+    }
+
 
 
 }

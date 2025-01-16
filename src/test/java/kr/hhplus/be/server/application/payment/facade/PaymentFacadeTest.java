@@ -9,6 +9,8 @@ import kr.hhplus.be.server.domain.payment.dto.PaymentResult;
 import kr.hhplus.be.server.domain.payment.dto.PaymentServiceRequest;
 import kr.hhplus.be.server.domain.payment.enums.PaymentStatusType;
 import kr.hhplus.be.server.domain.payment.service.PaymentService;
+import kr.hhplus.be.server.domain.point.dto.UserPointResult;
+import kr.hhplus.be.server.domain.point.service.PointService;
 import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.payment.PaymentErrorCode;
 import org.junit.jupiter.api.DisplayName;
@@ -35,19 +37,30 @@ class PaymentFacadeTest {
     @Mock
     private OrderService orderService;
 
+    @Mock
+    private PointService pointService;
+
     @Test
     @DisplayName("결제를 성공적으로 생성한다.")
     void createPayment_Success() {
         // Given
+        Long userId = 1L;
         Long orderId = 1L;
         Long salePrice = 5000L;
 
         OrderResult mockOrder = OrderResult.builder()
+                .userId(userId)
                 .orderId(orderId)
                 .salePrice(salePrice)
                 .orderState(OrderStateType.ORDERED)
                 .build();
         when(orderService.findOrderInfoNoProduct(orderId)).thenReturn(mockOrder);
+
+        UserPointResult mockPointResult = UserPointResult.builder()
+                .userId(userId)
+                .amount(10000L)
+                .build();
+        when(pointService.useUserPoint(userId, salePrice)).thenReturn(mockPointResult);
 
         PaymentResult mockPaymentResult = PaymentResult.builder()
                 .paymentId(100L)
@@ -72,6 +85,7 @@ class PaymentFacadeTest {
         assertThat(response.getPaymentStatus()).isEqualTo(PaymentStatusType.PAYED);
 
         verify(orderService, times(1)).findOrderInfoNoProduct(orderId);
+        verify(pointService, times(1)).useUserPoint(userId, salePrice);
         verify(paymentService, times(1)).createPayment(any(PaymentServiceRequest.class));
         verify(orderService, times(1)).updateOrderState(orderId, OrderStateType.PAYED);
     }
@@ -99,6 +113,7 @@ class PaymentFacadeTest {
                 .hasMessage(PaymentErrorCode.INVALID_ORDER_STATE.getMessage());
 
         verify(orderService, times(1)).findOrderInfoNoProduct(orderId);
+        verify(pointService, never()).useUserPoint(anyLong(), anyLong());
         verify(paymentService, never()).createPayment(any(PaymentServiceRequest.class));
         verify(orderService, never()).updateOrderState(anyLong(), any(OrderStateType.class));
     }

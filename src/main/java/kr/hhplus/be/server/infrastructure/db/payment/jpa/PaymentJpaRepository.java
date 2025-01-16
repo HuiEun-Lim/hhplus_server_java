@@ -7,4 +7,6 @@ public interface PaymentJpaRepository extends JpaRepository<Payment, Long> {
     Payment save(Payment payment);
 
     Payment findByPaymentId(Long paymentId);
+
+    int countByOrderId(Long orderId);
 }
