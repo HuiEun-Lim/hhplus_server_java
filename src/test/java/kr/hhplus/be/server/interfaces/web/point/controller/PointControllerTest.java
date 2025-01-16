@@ -1,36 +1,22 @@
 package kr.hhplus.be.server.interfaces.web.point.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.hhplus.be.server.application.point.dto.PointFacadeResponse;
 import kr.hhplus.be.server.application.point.facade.PointFacade;
+import kr.hhplus.be.server.interfaces.web.ControllerTestSupport;
 import kr.hhplus.be.server.interfaces.web.point.dto.request.PointRequest;
+import kr.hhplus.be.server.interfaces.web.product.controller.ProductController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@WebMvcTest(PointController.class)
-@ExtendWith(MockitoExtension.class)
-class PointControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockitoBean
-    private PointFacade pointFacade;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+class PointControllerTest extends ControllerTestSupport {
 
     @Test
     @DisplayName("사용자의 포인트를 충전한다.")

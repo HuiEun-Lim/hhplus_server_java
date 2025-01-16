@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.application.payment.facade;
 
+import kr.hhplus.be.server.application.IntegrationTestSupport;
 import kr.hhplus.be.server.application.payment.dto.request.PaymnetFacadeRequset;
 import kr.hhplus.be.server.application.payment.dto.response.PaymentFacadeResponse;
 import kr.hhplus.be.server.domain.order.entity.Order;
@@ -7,28 +8,22 @@ import kr.hhplus.be.server.domain.order.enums.OrderStateType;
 import kr.hhplus.be.server.domain.order.repository.OrderRepository;
 import kr.hhplus.be.server.domain.payment.enums.PaymentStatusType;
 import kr.hhplus.be.server.domain.user.entity.User;
-import kr.hhplus.be.server.domain.user.repository.UserRepository;
 import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.payment.PaymentErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@SpringBootTest
-class PaymentFacadeIntegrationTest {
+class PaymentFacadeIntegrationTest extends IntegrationTestSupport {
 
     @Autowired
     private PaymentFacade paymentFacade;
 
     @Autowired
     private OrderRepository orderRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Test
     @DisplayName("주문 결제를 성공적으로 생성한다.")

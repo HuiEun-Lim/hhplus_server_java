@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.application.order.facade;
 
+import kr.hhplus.be.server.application.IntegrationTestSupport;
 import kr.hhplus.be.server.application.order.dto.request.OrderFacadeRequest;
 import kr.hhplus.be.server.application.order.dto.request.OrderProductDto;
 import kr.hhplus.be.server.application.order.dto.response.OrderFacadeResponse;
@@ -15,14 +16,12 @@ import kr.hhplus.be.server.domain.product.entity.Stock;
 import kr.hhplus.be.server.domain.product.repository.ProductRepository;
 import kr.hhplus.be.server.domain.product.repository.StockRepository;
 import kr.hhplus.be.server.domain.user.entity.User;
-import kr.hhplus.be.server.domain.user.repository.UserRepository;
 import kr.hhplus.be.server.infrastructure.db.coupon.jpa.CouponIssuanceJpaRepository;
 import kr.hhplus.be.server.infrastructure.db.coupon.jpa.CouponJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -30,13 +29,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-class OrderFacadeIntegrationTest {
+class OrderFacadeIntegrationTest extends IntegrationTestSupport {
     @Autowired
     private OrderFacade orderFacade;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private ProductRepository productRepository;

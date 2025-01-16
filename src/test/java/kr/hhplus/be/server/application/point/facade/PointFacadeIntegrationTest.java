@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.application.point.facade;
 
+import kr.hhplus.be.server.application.IntegrationTestSupport;
 import kr.hhplus.be.server.application.point.dto.PointFacadeResponse;
 import kr.hhplus.be.server.domain.point.entity.UserPoint;
 import kr.hhplus.be.server.domain.point.repository.UserPointRepository;
@@ -8,17 +9,13 @@ import kr.hhplus.be.server.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-class PointFacadeIntegrationTest {
-    @Autowired
-    private PointFacade pointFacade;
+class PointFacadeIntegrationTest extends IntegrationTestSupport {
 
     @Autowired
-    private UserRepository userRepository;
+    private PointFacade pointFacade;
 
     @Autowired
     private UserPointRepository pointRepository;

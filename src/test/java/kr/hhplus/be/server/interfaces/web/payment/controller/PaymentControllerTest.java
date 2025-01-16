@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.hhplus.be.server.application.payment.dto.response.PaymentFacadeResponse;
 import kr.hhplus.be.server.application.payment.facade.PaymentFacade;
 import kr.hhplus.be.server.domain.payment.enums.PaymentStatusType;
+import kr.hhplus.be.server.interfaces.web.ControllerTestSupport;
 import kr.hhplus.be.server.interfaces.web.payment.dto.request.PaymentRequest;
+import kr.hhplus.be.server.interfaces.web.point.controller.PointController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -20,18 +20,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@WebMvcTest(PaymentController.class)
-@ExtendWith(MockitoExtension.class)
-class PaymentControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockitoBean
-    private PaymentFacade paymentFacade;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+class PaymentControllerTest extends ControllerTestSupport {
 
     @Test
     @DisplayName("결제를 성공적으로 생성한다.")

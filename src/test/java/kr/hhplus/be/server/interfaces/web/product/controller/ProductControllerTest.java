@@ -3,6 +3,7 @@ package kr.hhplus.be.server.interfaces.web.product.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.hhplus.be.server.application.product.dto.ProductFacadeResponse;
 import kr.hhplus.be.server.application.product.facade.ProductFacade;
+import kr.hhplus.be.server.interfaces.web.ControllerTestSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,18 +25,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@WebMvcTest(ProductController.class)
-@ExtendWith(MockitoExtension.class)
-class ProductControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockitoBean
-    private ProductFacade productFacade;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+class ProductControllerTest extends ControllerTestSupport {
 
     @Test
     @DisplayName("상품 목록을 성공적으로 조회한다.")

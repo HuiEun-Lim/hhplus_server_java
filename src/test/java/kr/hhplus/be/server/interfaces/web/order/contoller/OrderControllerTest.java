@@ -5,7 +5,9 @@ import kr.hhplus.be.server.application.order.dto.request.OrderProductDto;
 import kr.hhplus.be.server.application.order.dto.response.OrderFacadeResponse;
 import kr.hhplus.be.server.application.order.facade.OrderFacade;
 import kr.hhplus.be.server.domain.order.dto.response.OrderItem;
+import kr.hhplus.be.server.interfaces.web.ControllerTestSupport;
 import kr.hhplus.be.server.interfaces.web.order.dto.request.OrderRequest;
+import kr.hhplus.be.server.interfaces.web.point.controller.PointController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,18 +25,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@WebMvcTest(OrderController.class)
-@ExtendWith(MockitoExtension.class)
-class OrderControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockitoBean
-    private OrderFacade orderFacade;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+class OrderControllerTest extends ControllerTestSupport {
 
     @Test
     @DisplayName("주문을 성공적으로 생성한다.")
