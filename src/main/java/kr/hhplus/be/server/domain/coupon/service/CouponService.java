@@ -64,17 +64,17 @@ public class CouponService {
     }
 
     @Transactional
-    public CouponIssuanceResult useUserIssuedCoupon(Long userId, Long couponId) {
-        Coupon coupon = couponRepository.findByCouponIdWithLock(couponId);
+    public CouponIssuanceResult useUserIssuedCoupon(Long userId, Long issuanceId) {
+        CouponIssuance issuance = couponIssuanceRepository.findByUserIdAndIssuanceId(userId, issuanceId);
+        if (issuance == null) {
+            throw new CommonException(CouponErrorCode.ISSUED_COUPON_IS_NULL);
+        }
+
+        Coupon coupon = couponRepository.findByCouponId(issuance.getCouponId());
         if (coupon == null) {
             throw new CommonException(CouponErrorCode.COUPON_IS_NULL);
         }
         coupon.checkExpiryDate();
-
-        CouponIssuance issuance = couponIssuanceRepository.findByUserIdAndCouponId(userId, couponId);
-        if (issuance == null) {
-            throw new CommonException(CouponErrorCode.ISSUED_COUPON_IS_NULL);
-        }
 
         CouponIssuance usedCoupon = new CouponIssuance(issuance.getIssuanceId(), issuance.getUserId(), issuance.getCouponId(), CouponStateType.USE, LocalDateTime.now());
 

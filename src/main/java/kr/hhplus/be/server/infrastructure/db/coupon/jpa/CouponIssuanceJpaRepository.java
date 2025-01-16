@@ -18,5 +18,5 @@ public interface CouponIssuanceJpaRepository  extends JpaRepository<CouponIssuan
 
     Long countByCouponId(Long couponId);
 
-    CouponIssuance findByUserIdAndCouponId(Long userId, Long couponId);
+    CouponIssuance findByUserIdAndIssuanceId(Long userId, Long issuanceId);
 }

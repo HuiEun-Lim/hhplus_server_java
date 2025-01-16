@@ -10,5 +10,5 @@ public interface CouponIssuanceRepository {
     CouponIssuance findByIssuanceIdWithLock(Long issuanceId);
     CouponIssuance save(CouponIssuance entity);
     Long countByCouponId(Long couponId);
-    CouponIssuance findByUserIdAndCouponId(Long userId, Long couponId);
+    CouponIssuance findByUserIdAndIssuanceId(Long userId, Long issuance);
 }

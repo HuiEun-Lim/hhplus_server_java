@@ -153,14 +153,14 @@ class CouponServiceTest {
         Coupon mockCoupon = new Coupon(couponId, "10% 할인 쿠폰", DiscountType.RATE, 10L, 5000L, 100L, LocalDateTime.now().plusDays(10));
         CouponIssuance mockIssuance = new CouponIssuance(1L, userId, couponId, CouponStateType.UNUSED, null);
 
-        when(couponRepository.findByCouponIdWithLock(couponId)).thenReturn(mockCoupon);
-        when(couponIssuanceRepository.findByUserIdAndCouponId(userId, couponId)).thenReturn(mockIssuance);
+        when(couponRepository.findByCouponId(couponId)).thenReturn(mockCoupon);
+        when(couponIssuanceRepository.findByUserIdAndIssuanceId(userId, mockIssuance.getIssuanceId())).thenReturn(mockIssuance);
 
         CouponIssuance savedIssuance = new CouponIssuance(1L, userId, couponId, CouponStateType.USE, LocalDateTime.now());
         when(couponIssuanceRepository.save(any(CouponIssuance.class))).thenReturn(savedIssuance);
 
         // When
-        CouponIssuanceResult result = couponService.useUserIssuedCoupon(userId, couponId);
+        CouponIssuanceResult result = couponService.useUserIssuedCoupon(userId, savedIssuance.getIssuanceId());
 
         // Then
         assertNotNull(result);
@@ -168,28 +168,9 @@ class CouponServiceTest {
         assertEquals(userId, result.getUserId());
         assertEquals(CouponStateType.USE, result.getCouponState());
 
-        verify(couponRepository, times(1)).findByCouponIdWithLock(couponId);
-        verify(couponIssuanceRepository, times(1)).findByUserIdAndCouponId(userId, couponId); // 호출 메서드 수정
+        verify(couponRepository, times(1)).findByCouponId(couponId);
+        verify(couponIssuanceRepository, times(1)).findByUserIdAndIssuanceId(userId, savedIssuance.getIssuanceId()); // 호출 메서드 수정
         verify(couponIssuanceRepository, times(1)).save(any(CouponIssuance.class));
-    }
-
-    @Test
-    @DisplayName("존재하지 않는 쿠폰 ID로 쿠폰을 사용하려고 할 때 예외를 발생시킨다.")
-    void testUseUserIssuedCoupon_CouponNotFound() {
-        // Given
-        Long userId = 1L;
-        Long couponId = 100L;
-
-        when(couponRepository.findByCouponIdWithLock(couponId)).thenReturn(null);
-
-        // When & Then
-        assertThatThrownBy(() -> couponService.useUserIssuedCoupon(userId, couponId))
-                .isInstanceOf(CommonException.class)
-                .hasMessage(CouponErrorCode.COUPON_IS_NULL.getMessage());
-
-        verify(couponRepository, times(1)).findByCouponIdWithLock(couponId);
-        verify(couponIssuanceRepository, never()).findByIssuanceIdWithLock(anyLong());
-        verify(couponIssuanceRepository, never()).save(any(CouponIssuance.class));
     }
 
     @Test
@@ -197,19 +178,45 @@ class CouponServiceTest {
     void testUseUserIssuedCoupon_IssuanceNotFound() {
         // Given
         Long userId = 1L;
-        Long couponId = 100L;
+        Long issuanceId = 100L;
 
-        Coupon mockCoupon = new Coupon(couponId, "1,000원 할인 쿠폰", DiscountType.AMOUNT, 1000L, 1000L, 100L, LocalDateTime.now().plusDays(10));
-        when(couponRepository.findByCouponIdWithLock(couponId)).thenReturn(mockCoupon);
-        when(couponIssuanceRepository.findByUserIdAndCouponId(userId, couponId)).thenReturn(null); // 올바른 Stub 설정
+        when(couponIssuanceRepository.findByUserIdAndIssuanceId(userId, issuanceId)).thenReturn(null);
 
         // When & Then
-        assertThatThrownBy(() -> couponService.useUserIssuedCoupon(userId, couponId))
+        assertThatThrownBy(() -> couponService.useUserIssuedCoupon(userId, issuanceId))
                 .isInstanceOf(CommonException.class)
                 .hasMessage(CouponErrorCode.ISSUED_COUPON_IS_NULL.getMessage());
 
-        verify(couponRepository, times(1)).findByCouponIdWithLock(couponId);
-        verify(couponIssuanceRepository, times(1)).findByUserIdAndCouponId(userId, couponId); // 호출 검증
+        verify(couponIssuanceRepository, times(1)).findByUserIdAndIssuanceId(userId, issuanceId);
+        verify(couponRepository, never()).findByCouponId(anyLong());
         verify(couponIssuanceRepository, never()).save(any(CouponIssuance.class));
     }
+
+    @Test
+    @DisplayName("존재하지 않는 쿠폰 ID로 쿠폰을 사용하려고 할 때 예외를 발생시킨다.")
+    void testUseUserIssuedCoupon_CouponNotFound() {
+        // Given
+        Long userId = 1L;
+        Long issuanceId = 100L;
+
+        CouponIssuance mockIssuance = CouponIssuance.builder()
+                .issuanceId(issuanceId)
+                .userId(userId)
+                .couponId(1L)
+                .couponState(CouponStateType.UNUSED)
+                .build();
+
+        when(couponIssuanceRepository.findByUserIdAndIssuanceId(userId, issuanceId)).thenReturn(mockIssuance);
+        when(couponRepository.findByCouponId(mockIssuance.getCouponId())).thenReturn(null);
+
+        // When & Then
+        assertThatThrownBy(() -> couponService.useUserIssuedCoupon(userId, issuanceId))
+                .isInstanceOf(CommonException.class)
+                .hasMessage(CouponErrorCode.COUPON_IS_NULL.getMessage());
+
+        verify(couponIssuanceRepository, times(1)).findByUserIdAndIssuanceId(userId, issuanceId);
+        verify(couponRepository, times(1)).findByCouponId(mockIssuance.getCouponId());
+        verify(couponIssuanceRepository, never()).save(any(CouponIssuance.class));
+    }
+
 }
