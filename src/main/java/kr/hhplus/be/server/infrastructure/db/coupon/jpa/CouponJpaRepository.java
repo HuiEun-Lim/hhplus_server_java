@@ -16,4 +16,5 @@ public interface CouponJpaRepository extends JpaRepository<Coupon, Long>  {
 
     Coupon save(@NotNull Coupon coupon);
 
+    int countByCouponId(Long couponId);
 }

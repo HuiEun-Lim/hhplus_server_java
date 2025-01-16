@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.application.coupon.facade;
 
+import kr.hhplus.be.server.application.IntegrationTestSupport;
 import kr.hhplus.be.server.application.coupon.dto.CouponIssuanceFacadeResponse;
 import kr.hhplus.be.server.domain.coupon.entity.Coupon;
 import kr.hhplus.be.server.domain.coupon.enums.CouponStateType;
@@ -17,14 +18,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-class CouponFacadeIntegrationTest {
+class CouponFacadeIntegrationTest extends IntegrationTestSupport {
 
     @Autowired
     private CouponFacade couponFacade;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private CouponRepository couponRepository;

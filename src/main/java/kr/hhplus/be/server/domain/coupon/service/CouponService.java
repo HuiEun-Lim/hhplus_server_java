@@ -10,6 +10,7 @@ import kr.hhplus.be.server.domain.coupon.repository.CouponRepository;
 import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.coupon.CouponErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,13 +40,17 @@ public class CouponService {
         if (coupon == null) {
             throw new CommonException(CouponErrorCode.COUPON_IS_NULL);
         }
-
         coupon.checkExpiryDate();
         coupon.checkIssuedCount(couponIssuanceRepository.countByCouponId(couponId));
 
         CouponIssuance IssueReqInfo = new CouponIssuance(userId, couponId, CouponStateType.UNUSED);
 
-        CouponIssuance issuedCoupon = couponIssuanceRepository.save(IssueReqInfo);
+        CouponIssuance issuedCoupon;
+        try {
+            issuedCoupon = couponIssuanceRepository.save(IssueReqInfo);
+        } catch (DataIntegrityViolationException e) {
+            throw new CommonException(CouponErrorCode.ALREADY_ISSUED_COUPON);
+        }
         issuedCoupon.checkCouponState();
 
         return CouponIssuanceResult.toResult(issuedCoupon, coupon);

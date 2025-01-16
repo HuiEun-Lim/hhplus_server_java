@@ -40,4 +40,9 @@ public class CouponIssuanceRepositoryImpl implements CouponIssuanceRepository {
     public CouponIssuance findByUserIdAndIssuanceId(Long userId, Long issuanceId) {
         return couponIssuanceJpaRepository.findByUserIdAndIssuanceId(userId, issuanceId);
     }
+
+    @Override
+    public int countByUserIdAndCouponId(Long userId, Long couponId) {
+        return couponIssuanceJpaRepository.countByUserIdAndCouponId(userId, couponId);
+    }
 }
