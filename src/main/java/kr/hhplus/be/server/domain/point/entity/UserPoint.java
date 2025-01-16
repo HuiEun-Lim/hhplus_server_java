@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Version;
 import kr.hhplus.be.server.domain.BaseEntity;
 import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.point.PointErrorCode;
@@ -24,6 +25,9 @@ public class UserPoint extends BaseEntity {
 
     private Long userId;
     private Long amount;
+
+    @Version
+    private Integer version;
 
     public static UserPoint create(Long userId, Long amount){
         return UserPoint.builder()

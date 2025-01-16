@@ -15,6 +15,7 @@ public enum PointErrorCode implements ErrorCode {
     , CHARGE_POINT_UNDER_TEN(HttpStatus.BAD_REQUEST, "포인트 10원 미만은 충전할 수 없습니다.")
     , CHARGE_POINT_UNIT_TEN(HttpStatus.BAD_REQUEST, "포인트는 10원 단위로 충전할 수 있습니다.")
     , USE_POINT_LACK(HttpStatus.BAD_REQUEST, "충전된 포인트보다 많은 포인트를 사용할 수 없습니다.")
+    , USER_POINT_FAIL(HttpStatus.BAD_REQUEST, "포인트 충전/사용이 실패하였습니다.")
     ;
 
     private final HttpStatus status;

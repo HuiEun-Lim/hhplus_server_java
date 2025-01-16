@@ -38,7 +38,7 @@ class PointServiceTest {
         UserPoint existingUserPoint = UserPoint.create(userId, 500L);
 
         // when
-        when(userPointRepository.findByUserIdWithLock(userId)).thenReturn(existingUserPoint);
+        when(userPointRepository.findByUserId(userId)).thenReturn(existingUserPoint);
         when(userPointRepository.save(any(UserPoint.class))).thenReturn(existingUserPoint);
         when(pointHistoryRepository.save(any(PointHistory.class))).thenReturn(mock(PointHistory.class));
         UserPointResult result = pointService.chargeUserPoint(userId, amount);
@@ -47,7 +47,7 @@ class PointServiceTest {
         assertNotNull(result);
         assertEquals(userId, result.getUserId());
         assertEquals(1500L, result.getAmount());
-        verify(userPointRepository, times(1)).findByUserIdWithLock(userId);
+        verify(userPointRepository, times(1)).findByUserId(userId);
         verify(userPointRepository, times(1)).save(existingUserPoint);
         verify(pointHistoryRepository, times(1)).save(any(PointHistory.class));
     }
@@ -60,7 +60,7 @@ class PointServiceTest {
         Long amount = 500L;
 
         // When
-        when(userPointRepository.findByUserIdWithLock(userId)).thenReturn(null);
+        when(userPointRepository.findByUserId(userId)).thenReturn(null);
         when(userPointRepository.save(any(UserPoint.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(pointHistoryRepository.save(any(PointHistory.class))).thenReturn(mock(PointHistory.class));
 
@@ -70,7 +70,7 @@ class PointServiceTest {
         assertNotNull(result);
         assertEquals(userId, result.getUserId());
         assertEquals(500L, result.getAmount());
-        verify(userPointRepository, times(1)).findByUserIdWithLock(userId);
+        verify(userPointRepository, times(1)).findByUserId(userId);
         verify(userPointRepository, times(1)).save(any(UserPoint.class));
         verify(pointHistoryRepository, times(1)).save(any(PointHistory.class));
     }

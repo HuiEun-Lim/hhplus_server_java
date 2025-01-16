@@ -4,9 +4,9 @@ import kr.hhplus.be.server.domain.point.entity.UserPoint;
 
 public interface UserPointRepository {
 
-    public UserPoint findByUserId(Long userId);
+    UserPoint findByUserId(Long userId);
 
-    public UserPoint save(UserPoint userPoint);
+    UserPoint save(UserPoint userPoint);
 
-    public UserPoint findByUserIdWithLock(Long userId);
+    UserPoint findByUserIdWithLock(Long userId);
 }
