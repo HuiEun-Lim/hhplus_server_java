@@ -1,19 +1,19 @@
 package kr.hhplus.be.server.interfaces.web.payment.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import kr.hhplus.be.server.application.payment.dto.request.PaymnetFacadeRequset;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.antlr.v4.runtime.misc.NotNull;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class PaymentRequest {
-    @NotNull
+    @Schema(description = "사용자 ID")
     private Long userId;
 
-    @NotNull
+    @Schema(description = "주문 ID")
     private Long orderId;
 
     public PaymnetFacadeRequset toFacadeRequset(){
