@@ -3,8 +3,8 @@ package kr.hhplus.be.server.domain.user.service;
 import kr.hhplus.be.server.domain.user.dto.UserResult;
 import kr.hhplus.be.server.domain.user.entity.User;
 import kr.hhplus.be.server.domain.user.repository.UserRepository;
+import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.user.UserErrorCode;
-import kr.hhplus.be.server.support.exception.user.UserException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +13,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,7 +35,7 @@ class UserServiceTest {
 
         // When & Then
         assertThatThrownBy(() -> userService.getUserByUserId(userId))
-                .isInstanceOf(UserException.class)
+                .isInstanceOf(CommonException.class)
                 .hasMessage(UserErrorCode.INVALID_USER.getMessage());
         verify(userRepository, times(1)).findByUserId(userId);
     }

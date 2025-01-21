@@ -36,7 +36,7 @@ public class ProductFacade {
         List<ProductFacadeResponse> responses = new ArrayList<>();
 
         for(TopOrderProduct topProduct : topList){
-            ProductResult product = productService.getProductByProductId(topProduct.getProductId());
+            ProductResult product = productService.getProductByProductIdNoLock(topProduct.getProductId());
             responses.add(ProductFacadeResponse.toResponse(product));
         }
 

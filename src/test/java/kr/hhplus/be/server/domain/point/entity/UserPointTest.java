@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.domain.point.entity;
 
+import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.point.PointErrorCode;
-import kr.hhplus.be.server.support.exception.point.PointException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +16,7 @@ class UserPointTest {
     void useUserPoint() {
         // given
         Long userAmount = 2000L;
-        UserPoint userPoint = new UserPoint(1L, 1L, 3000L);
+        UserPoint userPoint = UserPoint.create(1L, 3000L);
 
         // when & then
         assertDoesNotThrow(() -> userPoint.decrease(userAmount));
@@ -28,11 +28,11 @@ class UserPointTest {
     void usePointMoreThanUserPoint() {
         // given
         Long userAmount = 2000L;
-        UserPoint userPoint = new UserPoint(1L, 1L, 0L);
+        UserPoint userPoint = UserPoint.create(1L, 0L);
 
         // when & then
         assertThatThrownBy(() -> userPoint.decrease(userAmount))
-                .isInstanceOf(PointException.class)
+                .isInstanceOf(CommonException.class)
                 .hasMessage(PointErrorCode.USE_POINT_LACK.getMessage());
     }
 
@@ -41,7 +41,7 @@ class UserPointTest {
     void chargeUserPoint() {
         // given
         Long userAmount = 2000L;
-        UserPoint userPoint = new UserPoint(1L, 1L, 3000L);
+        UserPoint userPoint = UserPoint.create(1L, 3000L);
 
         // when & then
         assertDoesNotThrow(() -> userPoint.increase(userAmount));

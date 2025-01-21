@@ -3,8 +3,8 @@ package kr.hhplus.be.server.domain.coupon.entity;
 import jakarta.persistence.*;
 import kr.hhplus.be.server.domain.BaseEntity;
 import kr.hhplus.be.server.domain.coupon.enums.CouponStateType;
+import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.coupon.CouponErrorCode;
-import kr.hhplus.be.server.support.exception.coupon.CouponException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,15 +17,27 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="CouponIssuance", uniqueConstraints = {
+    @UniqueConstraint(
+            name="user_coupon_uk",
+            columnNames={"userId","couponId"}
+    )})
 public class CouponIssuance extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long issuanceId;
 
+    @Column(name = "userId")
     private Long userId;
+
+    @Column(name = "couponId")
     private Long couponId;
+
     @Enumerated(EnumType.STRING)
+    @Column(name = "couponState")
     private CouponStateType couponState;
+
+    @Column(name = "useDate")
     private LocalDateTime useDate;
 
     public CouponIssuance(long userId, long couponId, CouponStateType couponStateType) {
@@ -36,7 +48,7 @@ public class CouponIssuance extends BaseEntity {
 
     public void checkCouponState(){
         if(this.couponState.equals(CouponStateType.USE)) {
-            throw new CouponException(CouponErrorCode.ALREADY_USED_COUPON);
+            throw new CommonException(CouponErrorCode.ALREADY_USED_COUPON);
         }
     }
 }

@@ -2,11 +2,15 @@ package kr.hhplus.be.server.domain.order.dto.response;
 
 import kr.hhplus.be.server.domain.order.entity.OrderProduct;
 import kr.hhplus.be.server.domain.product.dto.ProductResult;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderItem {
     private Long orderProductId;
     private Long orderId;

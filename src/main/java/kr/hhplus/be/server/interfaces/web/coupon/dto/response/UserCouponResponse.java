@@ -13,6 +13,5 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserCouponResponse {
-    private String message;
-    private List<IssuedCouponInfo> data;
+    private List<IssuedCouponInfo> issuedCouponList;
 }

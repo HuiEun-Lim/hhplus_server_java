@@ -1,8 +1,8 @@
 package kr.hhplus.be.server.domain.order.entity;
 
 import kr.hhplus.be.server.domain.order.enums.OrderStateType;
+import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.order.OrderErrorCode;
-import kr.hhplus.be.server.support.exception.order.OrderException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -69,7 +69,7 @@ class OrderTest {
 
         // When & Then
         assertThatThrownBy(() -> order.checkOrderState(OrderStateType.PAYED))
-                .isInstanceOf(OrderException.class)
+                .isInstanceOf(CommonException.class)
                 .hasMessage(OrderErrorCode.FAIL_UPDATE_STATUS.getMessage());
     }
 

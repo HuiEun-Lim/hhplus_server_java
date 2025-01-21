@@ -1,20 +1,18 @@
 package kr.hhplus.be.server.interfaces.web.coupon.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.hhplus.be.server.application.coupon.dto.CouponIssuanceFacadeResponse;
 import kr.hhplus.be.server.application.coupon.facade.CouponFacade;
 import kr.hhplus.be.server.domain.coupon.enums.CouponStateType;
+import kr.hhplus.be.server.interfaces.web.ControllerTestSupport;
 import kr.hhplus.be.server.interfaces.web.coupon.dto.request.CouponRequest;
+import kr.hhplus.be.server.interfaces.web.point.controller.PointController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -24,18 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(CouponController.class)
-@ExtendWith(MockitoExtension.class)
-class CouponControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockitoBean
-    private CouponFacade couponFacade;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+class CouponControllerTest extends ControllerTestSupport {
 
     @Test
     @DisplayName("선착순 쿠폰 발급")
@@ -50,7 +37,9 @@ class CouponControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/coupons")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.issuedCoupon.userId").value(1L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.issuedCoupon.couponId").value(100L));
     }
 
     @Test
@@ -69,7 +58,9 @@ class CouponControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/coupons")
                         .param("userId", String.valueOf(userId))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.issuedCouponList[0].issuanceId").value(1L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.issuedCouponList[1].issuanceId").value(2L));
     }
 
 }

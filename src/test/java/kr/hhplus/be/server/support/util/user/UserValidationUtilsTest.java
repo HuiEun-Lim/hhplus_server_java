@@ -1,15 +1,12 @@
 package kr.hhplus.be.server.support.util.user;
 
-import kr.hhplus.be.server.support.exception.point.PointErrorCode;
-import kr.hhplus.be.server.support.exception.point.PointException;
+import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.user.UserErrorCode;
-import kr.hhplus.be.server.support.exception.user.UserException;
-import kr.hhplus.be.server.support.util.point.PointValidationUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class UserValidationUtilsTest {
 
@@ -31,7 +28,7 @@ class UserValidationUtilsTest {
 
         // when & then
         assertThatThrownBy(() -> UserValidationUtils.validateUserId(userId))
-                .isInstanceOf(UserException.class)
+                .isInstanceOf(CommonException.class)
                 .hasMessage(UserErrorCode.USER_ID_LESS_THAN_ZERO.getMessage());
     }
 

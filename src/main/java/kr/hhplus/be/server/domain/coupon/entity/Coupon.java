@@ -3,8 +3,8 @@ package kr.hhplus.be.server.domain.coupon.entity;
 import jakarta.persistence.*;
 import kr.hhplus.be.server.domain.BaseEntity;
 import kr.hhplus.be.server.domain.coupon.enums.DiscountType;
+import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.coupon.CouponErrorCode;
-import kr.hhplus.be.server.support.exception.coupon.CouponException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,13 +43,13 @@ public class Coupon extends BaseEntity {
 
     public void checkExpiryDate() {
         if(this.expiryDate.isBefore(LocalDateTime.now())) {
-            throw new CouponException(CouponErrorCode.EXPIRY_COUPON);
+            throw new CommonException(CouponErrorCode.EXPIRY_COUPON);
         }
     }
 
     public void checkIssuedCount(Long count) {
         if(this.maxIssuanceCount <= count) {
-            throw new CouponException(CouponErrorCode.MAX_ISSUED_COUPON);
+            throw new CommonException(CouponErrorCode.MAX_ISSUED_COUPON);
         }
     }
 }

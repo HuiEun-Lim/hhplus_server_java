@@ -1,13 +1,13 @@
 package kr.hhplus.be.server.domain.coupon.entity;
 
 import kr.hhplus.be.server.domain.coupon.enums.CouponStateType;
+import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.coupon.CouponErrorCode;
-import kr.hhplus.be.server.support.exception.coupon.CouponException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class CouponIssuanceTest {
 
@@ -19,7 +19,7 @@ class CouponIssuanceTest {
 
         // when then
         assertThatThrownBy(issuance::checkCouponState)
-                .isInstanceOf(CouponException.class)
+                .isInstanceOf(CommonException.class)
                 .hasMessage(CouponErrorCode.ALREADY_USED_COUPON.getMessage());
     }
 

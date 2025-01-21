@@ -7,9 +7,10 @@ import kr.hhplus.be.server.domain.coupon.entity.CouponIssuance;
 import kr.hhplus.be.server.domain.coupon.enums.CouponStateType;
 import kr.hhplus.be.server.domain.coupon.repository.CouponIssuanceRepository;
 import kr.hhplus.be.server.domain.coupon.repository.CouponRepository;
+import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.coupon.CouponErrorCode;
-import kr.hhplus.be.server.support.exception.coupon.CouponException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +29,7 @@ public class CouponService {
     public CouponResult getCouponInfoByCouponId(Long couponId) {
         Coupon coupon = couponRepository.findByCouponId(couponId);
         if (coupon == null) {
-            throw new CouponException(CouponErrorCode.COUPON_IS_NULL);
+            throw new CommonException(CouponErrorCode.COUPON_IS_NULL);
         }
         return CouponResult.toResult(coupon);
     }
@@ -37,15 +38,19 @@ public class CouponService {
     public CouponIssuanceResult issueCoupon(Long userId, Long couponId) {
         Coupon coupon = couponRepository.findByCouponIdWithLock(couponId);
         if (coupon == null) {
-            throw new CouponException(CouponErrorCode.COUPON_IS_NULL);
+            throw new CommonException(CouponErrorCode.COUPON_IS_NULL);
         }
-
         coupon.checkExpiryDate();
         coupon.checkIssuedCount(couponIssuanceRepository.countByCouponId(couponId));
 
         CouponIssuance IssueReqInfo = new CouponIssuance(userId, couponId, CouponStateType.UNUSED);
 
-        CouponIssuance issuedCoupon = couponIssuanceRepository.save(IssueReqInfo);
+        CouponIssuance issuedCoupon;
+        try {
+            issuedCoupon = couponIssuanceRepository.save(IssueReqInfo);
+        } catch (DataIntegrityViolationException e) {
+            throw new CommonException(CouponErrorCode.ALREADY_ISSUED_COUPON);
+        }
         issuedCoupon.checkCouponState();
 
         return CouponIssuanceResult.toResult(issuedCoupon, coupon);
@@ -64,17 +69,17 @@ public class CouponService {
     }
 
     @Transactional
-    public CouponIssuanceResult useUserIssuedCoupon(Long userId, Long couponId) {
-        Coupon coupon = couponRepository.findByCouponIdWithLock(couponId);
+    public CouponIssuanceResult useUserIssuedCoupon(Long userId, Long issuanceId) {
+        CouponIssuance issuance = couponIssuanceRepository.findByUserIdAndIssuanceId(userId, issuanceId);
+        if (issuance == null) {
+            throw new CommonException(CouponErrorCode.ISSUED_COUPON_IS_NULL);
+        }
+
+        Coupon coupon = couponRepository.findByCouponId(issuance.getCouponId());
         if (coupon == null) {
-            throw new CouponException(CouponErrorCode.COUPON_IS_NULL);
+            throw new CommonException(CouponErrorCode.COUPON_IS_NULL);
         }
         coupon.checkExpiryDate();
-
-        CouponIssuance issuance = couponIssuanceRepository.findByUserIdAndCouponId(userId, couponId);
-        if (issuance == null) {
-            throw new CouponException(CouponErrorCode.ISSUED_COUPON_IS_NULL);
-        }
 
         CouponIssuance usedCoupon = new CouponIssuance(issuance.getIssuanceId(), issuance.getUserId(), issuance.getCouponId(), CouponStateType.USE, LocalDateTime.now());
 
@@ -87,11 +92,11 @@ public class CouponService {
     public CouponIssuanceResult getIssuedCouponInfoByIssuanceId(Long issuanceId) {
         CouponIssuance issuedCoupon = couponIssuanceRepository.findByIssuanceIdWithLock(issuanceId);
         if (issuedCoupon == null) {
-            throw new CouponException(CouponErrorCode.ISSUED_COUPON_IS_NULL);
+            throw new CommonException(CouponErrorCode.ISSUED_COUPON_IS_NULL);
         }
         Coupon coupon = couponRepository.findByCouponId(issuedCoupon.getCouponId());
         if (coupon == null) {
-            throw new CouponException(CouponErrorCode.COUPON_IS_NULL);
+            throw new CommonException(CouponErrorCode.COUPON_IS_NULL);
         }
 
         return CouponIssuanceResult.toResult(issuedCoupon, coupon);

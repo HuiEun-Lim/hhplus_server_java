@@ -51,6 +51,8 @@ dependencies {
 	compileOnly ("org.projectlombok:lombok")
 	annotationProcessor ("org.projectlombok:lombok")
 	implementation(kotlin("stdlib-jdk8"))
+	implementation("org.slf4j:slf4j-api")
+	implementation("ch.qos.logback:logback-classic")
 
 	// QueryDSL
 	implementation ("com.querydsl:querydsl-jpa:5.0.0:jakarta")

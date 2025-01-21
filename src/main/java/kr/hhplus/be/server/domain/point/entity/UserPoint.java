@@ -4,9 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Version;
 import kr.hhplus.be.server.domain.BaseEntity;
+import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.point.PointErrorCode;
-import kr.hhplus.be.server.support.exception.point.PointException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,6 +26,9 @@ public class UserPoint extends BaseEntity {
     private Long userId;
     private Long amount;
 
+    @Version
+    private Integer version;
+
     public static UserPoint create(Long userId, Long amount){
         return UserPoint.builder()
                 .userId(userId)
@@ -38,7 +42,7 @@ public class UserPoint extends BaseEntity {
 
     public void decrease(Long amount){
         if(this.amount < amount){
-            throw new PointException(PointErrorCode.USE_POINT_LACK);
+            throw new CommonException(PointErrorCode.USE_POINT_LACK);
         }
         this.amount -= amount;
     }

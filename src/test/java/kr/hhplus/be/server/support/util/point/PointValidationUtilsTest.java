@@ -1,12 +1,12 @@
 package kr.hhplus.be.server.support.util.point;
 
+import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.point.PointErrorCode;
-import kr.hhplus.be.server.support.exception.point.PointException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class PointValidationUtilsTest {
 
@@ -28,7 +28,7 @@ class PointValidationUtilsTest {
 
         // when & then
         assertThatThrownBy(() -> PointValidationUtils.validatePointAmount(invalidAmount))
-                .isInstanceOf(PointException.class)
+                .isInstanceOf(CommonException.class)
                 .hasMessage(PointErrorCode.CHARGE_POINT_ZERO.getMessage());
     }
 
@@ -40,7 +40,7 @@ class PointValidationUtilsTest {
 
         // when & then
         assertThatThrownBy(() -> PointValidationUtils.validatePointAmount(invalidAmount))
-                .isInstanceOf(PointException.class)
+                .isInstanceOf(CommonException.class)
                 .hasMessage(PointErrorCode.CHARGE_POINT_MINUS.getMessage());
     }
 
@@ -52,7 +52,7 @@ class PointValidationUtilsTest {
 
         // when & then
         assertThatThrownBy(() -> PointValidationUtils.validatePointAmount(invalidAmount))
-                .isInstanceOf(PointException.class)
+                .isInstanceOf(CommonException.class)
                 .hasMessage(PointErrorCode.CHARGE_POINT_UNDER_TEN.getMessage());
     }
 
@@ -64,7 +64,7 @@ class PointValidationUtilsTest {
 
         // when & then
         assertThatThrownBy(() -> PointValidationUtils.validatePointAmount(invalidAmount))
-                .isInstanceOf(PointException.class)
+                .isInstanceOf(CommonException.class)
                 .hasMessage(PointErrorCode.CHARGE_POINT_UNIT_TEN.getMessage());
     }
 

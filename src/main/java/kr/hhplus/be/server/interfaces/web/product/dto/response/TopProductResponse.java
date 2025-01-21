@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.interfaces.web.product.dto.response;
 
-import kr.hhplus.be.server.domain.product.entity.Product;
+import kr.hhplus.be.server.interfaces.web.product.model.ProductInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,6 +13,5 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TopProductResponse {
-    private String message;
-    private List<Product> data;
+    private List<ProductInfo> topProducts;
 }
