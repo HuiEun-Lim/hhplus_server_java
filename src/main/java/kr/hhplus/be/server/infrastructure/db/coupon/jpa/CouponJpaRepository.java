@@ -16,5 +16,6 @@ public interface CouponJpaRepository extends JpaRepository<Coupon, Long>  {
 
     Coupon save(@NotNull Coupon coupon);
 
-    int countByCouponId(Long couponId);
+    @Query("SELECT c.maxIssuanceCount FROM Coupon c WHERE c.couponId = :couponId")
+    Long findMaxIssuanceCountByCouponId(Long couponId);
 }

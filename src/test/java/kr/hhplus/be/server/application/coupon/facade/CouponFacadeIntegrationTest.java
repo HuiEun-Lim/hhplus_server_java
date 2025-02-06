@@ -1,17 +1,18 @@
 package kr.hhplus.be.server.application.coupon.facade;
 
 import kr.hhplus.be.server.application.IntegrationTestSupport;
+import kr.hhplus.be.server.application.coupon.dto.CouponCacheFacadeResponse;
 import kr.hhplus.be.server.application.coupon.dto.CouponIssuanceFacadeResponse;
 import kr.hhplus.be.server.domain.coupon.entity.Coupon;
 import kr.hhplus.be.server.domain.coupon.enums.CouponStateType;
 import kr.hhplus.be.server.domain.coupon.enums.DiscountType;
 import kr.hhplus.be.server.domain.coupon.repository.CouponRepository;
 import kr.hhplus.be.server.domain.user.entity.User;
-import kr.hhplus.be.server.domain.user.repository.UserRepository;
+import kr.hhplus.be.server.infrastructure.redis.RedisRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,6 +26,15 @@ class CouponFacadeIntegrationTest extends IntegrationTestSupport {
 
     @Autowired
     private CouponRepository couponRepository;
+
+    @Autowired
+    private RedisRepository redisRepository;
+
+    @AfterEach
+    void tearDown() {
+        // Redis 데이터 정리
+        redisRepository.deleteKeysByPattern("coupon-*");
+    }
 
     @Test
     @DisplayName("사용자에게 쿠폰을 성공적으로 발급한다.")
@@ -71,6 +81,29 @@ class CouponFacadeIntegrationTest extends IntegrationTestSupport {
         CouponIssuanceFacadeResponse response2 = responses.get(1);
         assertThat(response2.getCouponId()).isEqualTo(coupon2.getCouponId());
         assertThat(response2.getCouponState()).isEqualTo(CouponStateType.UNUSED);
+    }
+
+    @Test
+    @DisplayName("사용자가 쿠폰 요청을 정상적으로 캐싱한다.")
+    void couponRequestCache_Success() {
+        // Given: 개별적으로 사용자 & 쿠폰 생성
+        User testUser = userRepository.save(User.create("테스트 사용자"));
+        Coupon testCoupon = couponRepository.save(
+                Coupon.create("테스트 쿠폰", DiscountType.AMOUNT, 5000L, 5000L, 10L, LocalDateTime.now().plusDays(5))
+        );
+
+        // When
+        CouponCacheFacadeResponse response = couponFacade.couponRequestCache(testUser.getUserId(), testCoupon.getCouponId());
+
+        // Then
+        assertThat(response).isNotNull();
+        assertThat(response.getCouponId()).isEqualTo(testCoupon.getCouponId());
+        assertThat(response.getIsCached()).isTrue();
+        assertThat(response.getUserId()).isEqualTo(testUser.getUserId());
+
+        // Redis 저장 확인
+        assertThat(redisRepository.isMemberOfSet("coupon-" + testCoupon.getCouponId() + "-issued",
+                testCoupon.getCouponId() + ":" + testUser.getUserId())).isTrue();
     }
 
 
