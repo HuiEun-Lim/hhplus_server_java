@@ -6,6 +6,7 @@ import kr.hhplus.be.server.infrastructure.db.coupon.jpa.CouponIssuanceJpaReposit
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class CouponIssuanceRepositoryImpl implements CouponIssuanceRepository {
@@ -44,5 +45,10 @@ public class CouponIssuanceRepositoryImpl implements CouponIssuanceRepository {
     @Override
     public int countByUserIdAndCouponId(Long userId, Long couponId) {
         return couponIssuanceJpaRepository.countByUserIdAndCouponId(userId, couponId);
+    }
+
+    @Override
+    public void saveAll(Set<CouponIssuance> issuanceList) {
+        couponIssuanceJpaRepository.saveAll(issuanceList);
     }
 }

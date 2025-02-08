@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.application.coupon.facade;
 
+import kr.hhplus.be.server.application.coupon.dto.CouponCacheFacadeResponse;
 import kr.hhplus.be.server.application.coupon.dto.CouponIssuanceFacadeResponse;
 import kr.hhplus.be.server.domain.coupon.dto.CouponIssuanceResult;
 import kr.hhplus.be.server.domain.coupon.service.CouponService;
@@ -39,10 +40,19 @@ public class CouponFacade {
         List<CouponIssuanceResult> issuanceList = couponService.userIssuedCouponList(userId);
 
         return issuanceList.stream()
-                .map(issuance -> {
-                    return CouponIssuanceFacadeResponse.toFacadeResponse(issuance, user);
-                })
+                .map(issuance -> CouponIssuanceFacadeResponse.toFacadeResponse(issuance, user))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public CouponCacheFacadeResponse couponRequestCache(Long userId, Long couponId) {
+        // 사용자 정보 검증
+        UserResult user = userService.getUserByUserId(userId);
+
+        // 쿠폰 발급 요청 캐싱
+        boolean cacheResult = couponService.requestCouponCache(userId, couponId);
+
+        return CouponCacheFacadeResponse.toFacadeResponse(couponId, cacheResult, user);
     }
 
 }

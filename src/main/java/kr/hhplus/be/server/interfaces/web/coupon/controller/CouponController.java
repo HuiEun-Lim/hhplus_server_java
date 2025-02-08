@@ -2,10 +2,12 @@ package kr.hhplus.be.server.interfaces.web.coupon.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import kr.hhplus.be.server.application.coupon.dto.CouponCacheFacadeResponse;
 import kr.hhplus.be.server.application.coupon.dto.CouponIssuanceFacadeResponse;
 import kr.hhplus.be.server.application.coupon.facade.CouponFacade;
 import kr.hhplus.be.server.interfaces.web.common.dto.ApiResponse;
 import kr.hhplus.be.server.interfaces.web.coupon.dto.request.CouponRequest;
+import kr.hhplus.be.server.interfaces.web.coupon.dto.response.CouponCacheResponse;
 import kr.hhplus.be.server.interfaces.web.coupon.dto.response.CouponIssueResponse;
 import kr.hhplus.be.server.interfaces.web.coupon.dto.response.UserCouponResponse;
 import kr.hhplus.be.server.interfaces.web.coupon.model.IssuedCouponInfo;
@@ -42,6 +44,13 @@ public class CouponController {
                 .toList();
 
         return ApiResponse.ok(new UserCouponResponse(infoList));
+    }
+
+    @Operation(summary = "선착순 쿠폰 발급 요청 캐싱", description = "쿠폰 발급 요청을 캐싱한다.")
+    @PostMapping("/cache")
+    public ApiResponse<CouponCacheResponse> cacheCouponRequest(@RequestBody CouponRequest request) {
+        CouponCacheFacadeResponse result = couponFacade.couponRequestCache(request.getUserId(), request.getCouponId());
+        return ApiResponse.ok(CouponCacheResponse.toResponse(result));
     }
 
 }

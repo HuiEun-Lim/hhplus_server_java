@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.application.coupon.facade;
 
+import kr.hhplus.be.server.application.coupon.dto.CouponCacheFacadeResponse;
 import kr.hhplus.be.server.application.coupon.dto.CouponIssuanceFacadeResponse;
 import kr.hhplus.be.server.domain.coupon.dto.CouponIssuanceResult;
 import kr.hhplus.be.server.domain.coupon.enums.CouponStateType;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
@@ -95,4 +97,29 @@ class CouponFacadeTest {
         verify(userService, times(1)).getUserByUserId(userId);
         verify(couponService, times(1)).userIssuedCouponList(userId);
     }
+
+    @Test
+    @DisplayName("쿠폰 요청을 캐시에 정상적으로 저장한다.")
+    void couponRequestCache_Success() {
+        // Given
+        Long userId = 1L;
+        Long couponId = 100L;
+
+        UserResult mockUser = UserResult.create(userId, "알렉스");
+        when(userService.getUserByUserId(userId)).thenReturn(mockUser);
+        when(couponService.requestCouponCache(userId, couponId)).thenReturn(true);
+
+        // When
+        CouponCacheFacadeResponse response = couponFacade.couponRequestCache(userId, couponId);
+
+        // Then
+        assertThat(response).isNotNull();
+        assertThat(response.getCouponId()).isEqualTo(couponId);
+        assertThat(response.getIsCached()).isTrue();
+        assertThat(response.getUserId()).isEqualTo(userId);
+
+        verify(userService, times(1)).getUserByUserId(userId);
+        verify(couponService, times(1)).requestCouponCache(userId, couponId);
+    }
+
 }

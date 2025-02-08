@@ -28,4 +28,9 @@ public class CouponRepositoryImpl implements CouponRepository {
     public Coupon save(Coupon coupon) {
         return couponJpaRepository.save(coupon);
     }
+
+    @Override
+    public Long findMaxIssuanceCountByCouponId(Long couponId) {
+        return couponJpaRepository.findMaxIssuanceCountByCouponId(couponId);
+    }
 }

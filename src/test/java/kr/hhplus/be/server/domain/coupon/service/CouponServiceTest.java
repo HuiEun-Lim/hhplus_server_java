@@ -8,6 +8,7 @@ import kr.hhplus.be.server.domain.coupon.enums.CouponStateType;
 import kr.hhplus.be.server.domain.coupon.enums.DiscountType;
 import kr.hhplus.be.server.domain.coupon.repository.CouponIssuanceRepository;
 import kr.hhplus.be.server.domain.coupon.repository.CouponRepository;
+import kr.hhplus.be.server.infrastructure.redis.RedisRepository;
 import kr.hhplus.be.server.support.exception.CommonException;
 import kr.hhplus.be.server.support.exception.coupon.CouponErrorCode;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +21,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -37,6 +40,9 @@ class CouponServiceTest {
 
     @InjectMocks
     private CouponService couponService;
+
+    @Mock
+    private RedisRepository redisRepository;
 
     @Test
     @DisplayName("쿠폰 ID로 쿠폰의 정보를 조회한다.")
@@ -217,6 +223,112 @@ class CouponServiceTest {
         verify(couponIssuanceRepository, times(1)).findByUserIdAndIssuanceId(userId, issuanceId);
         verify(couponRepository, times(1)).findByCouponId(mockIssuance.getCouponId());
         verify(couponIssuanceRepository, never()).save(any(CouponIssuance.class));
+    }
+
+    @Test
+    @DisplayName("정상적으로 쿠폰 요청을 처리한다.")
+    void successRequestCouponCache() {
+        // Given
+        Long userId = 1L;
+        Long couponId = 100L;
+        Coupon mockCoupon = new Coupon(couponId, "1,000원 할인 쿠폰", DiscountType.AMOUNT, 1000L, 1000L, 50L, LocalDateTime.now().plusDays(10));
+
+        when(couponRepository.findByCouponIdWithLock(couponId)).thenReturn(mockCoupon);
+        when(redisRepository.isMemberOfSet(anyString(), anyString())).thenReturn(false);
+        when(redisRepository.getSetSize(anyString())).thenReturn(10L);
+
+        // When
+        boolean result = couponService.requestCouponCache(userId, couponId);
+
+        // Then
+        assertThat(result).isTrue();
+
+        verify(redisRepository, times(1)).addToSortedSet(
+                anyString(),   // key
+                anyString(),   // value
+                anyDouble(),   // timestamp (double 타입)
+                anyLong(),     // TTL
+                any(TimeUnit.class) // TimeUnit
+        );
+        verify(redisRepository, times(1)).addToSet(anyString(), anyString());
+    }
+
+    @Test
+    @DisplayName("이미 발급된 쿠폰을 요청하면 예외가 발생한다.")
+    void failAlreadyIssuedCoupon() {
+        // Given
+        Long userId = 1L;
+        Long couponId = 100L;
+        Coupon mockCoupon = new Coupon(couponId, "1,000원 할인 쿠폰", DiscountType.AMOUNT, 1000L, 1000L, 50L, LocalDateTime.now().plusDays(10));
+
+        when(couponRepository.findByCouponIdWithLock(couponId)).thenReturn(mockCoupon);
+        when(redisRepository.isMemberOfSet(anyString(), anyString())).thenReturn(true);
+
+        // When & Then
+        assertThatThrownBy(() -> couponService.requestCouponCache(userId, couponId))
+                .isInstanceOf(CommonException.class)
+                .hasMessage(CouponErrorCode.ALREADY_ISSUED_COUPON.getMessage());
+
+        verify(redisRepository, never()).addToSortedSet(anyString(), anyString(), anyLong(), anyLong(), any(TimeUnit.class));
+        verify(redisRepository, never()).addToSet(anyString(), anyString());
+    }
+
+    @Test
+    @DisplayName("쿠폰 발급 개수가 초과되었을 때 예외가 발생한다.")
+    void failCouponIssuedCountExceeded() {
+        // Given
+        Long userId = 1L;
+        Long couponId = 100L;
+        Coupon mockCoupon = new Coupon(couponId, "1,000원 할인 쿠폰", DiscountType.AMOUNT, 1000L, 1000L, 10L, LocalDateTime.now().plusDays(10));
+
+        when(couponRepository.findByCouponIdWithLock(couponId)).thenReturn(mockCoupon);
+        when(redisRepository.isMemberOfSet(anyString(), anyString())).thenReturn(false);
+        when(redisRepository.getSetSize(anyString())).thenReturn(11L); // 최대 발급 수 초과
+
+        // When & Then
+        assertThatThrownBy(() -> couponService.requestCouponCache(userId, couponId))
+                .isInstanceOf(CommonException.class)
+                .hasMessage(CouponErrorCode.MAX_ISSUED_COUPON.getMessage());
+
+        verify(redisRepository, never()).addToSortedSet(anyString(), anyString(), anyLong(), anyLong(), any(TimeUnit.class));
+        verify(redisRepository, never()).addToSet(anyString(), anyString());
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 쿠폰을 요청하면 예외가 발생한다.")
+    void failCouponNotFound() {
+        // Given
+        Long userId = 1L;
+        Long couponId = 100L;
+
+        when(couponRepository.findByCouponIdWithLock(couponId)).thenReturn(null);
+
+        // When & Then
+        assertThatThrownBy(() -> couponService.requestCouponCache(userId, couponId))
+                .isInstanceOf(CommonException.class)
+                .hasMessage(CouponErrorCode.COUPON_IS_NULL.getMessage());
+
+        verify(redisRepository, never()).addToSortedSet(anyString(), anyString(), anyLong(), anyLong(), any(TimeUnit.class));
+        verify(redisRepository, never()).addToSet(anyString(), anyString());
+    }
+
+    @Test
+    @DisplayName("만료된 쿠폰을 요청하면 예외가 발생한다.")
+    void failCouponExpired() {
+        // Given
+        Long userId = 1L;
+        Long couponId = 100L;
+        Coupon mockCoupon = new Coupon(couponId, "1,000원 할인 쿠폰", DiscountType.AMOUNT, 1000L, 1000L, 50L, LocalDateTime.now().minusDays(1)); // 만료된 쿠폰
+
+        when(couponRepository.findByCouponIdWithLock(couponId)).thenReturn(mockCoupon);
+
+        // When & Then
+        assertThatThrownBy(() -> couponService.requestCouponCache(userId, couponId))
+                .isInstanceOf(CommonException.class)
+                .hasMessage(CouponErrorCode.EXPIRY_COUPON.getMessage());
+
+        verify(redisRepository, never()).addToSortedSet(anyString(), anyString(), anyLong(), anyLong(), any(TimeUnit.class));
+        verify(redisRepository, never()).addToSet(anyString(), anyString());
     }
 
 }
