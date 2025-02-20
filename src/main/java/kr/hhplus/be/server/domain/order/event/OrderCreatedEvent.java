@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.application.order.event;
+package kr.hhplus.be.server.domain.order.event;
 
 import kr.hhplus.be.server.domain.order.dto.response.OrderResult;
 import lombok.Getter;

@@ -1,6 +1,6 @@
-package kr.hhplus.be.server.infrastructure.external;
+package kr.hhplus.be.server.interfaces.spring;
 
-import kr.hhplus.be.server.application.order.event.OrderCreatedEvent;
+import kr.hhplus.be.server.domain.order.event.OrderCreatedEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

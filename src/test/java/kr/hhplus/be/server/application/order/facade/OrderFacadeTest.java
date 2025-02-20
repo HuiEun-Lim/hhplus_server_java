@@ -3,7 +3,6 @@ package kr.hhplus.be.server.application.order.facade;
 import kr.hhplus.be.server.application.order.dto.request.OrderFacadeRequest;
 import kr.hhplus.be.server.application.order.dto.request.OrderProductDto;
 import kr.hhplus.be.server.application.order.dto.response.OrderFacadeResponse;
-import kr.hhplus.be.server.application.order.event.OrderCreatedEvent;
 import kr.hhplus.be.server.domain.coupon.dto.CouponIssuanceResult;
 import kr.hhplus.be.server.domain.coupon.enums.CouponStateType;
 import kr.hhplus.be.server.domain.coupon.enums.DiscountType;
@@ -12,6 +11,7 @@ import kr.hhplus.be.server.domain.order.dto.request.OrderServiceRequest;
 import kr.hhplus.be.server.domain.order.dto.response.OrderItem;
 import kr.hhplus.be.server.domain.order.dto.response.OrderResult;
 import kr.hhplus.be.server.domain.order.enums.OrderStateType;
+import kr.hhplus.be.server.domain.order.event.OrderEventPublisher;
 import kr.hhplus.be.server.domain.order.service.OrderService;
 import kr.hhplus.be.server.domain.product.dto.ProductResult;
 import kr.hhplus.be.server.domain.product.service.ProductService;
@@ -23,7 +23,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.ApplicationEventPublisher;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -52,11 +51,8 @@ class OrderFacadeTest {
     @Mock
     private ProductService productService;
 
-//    @Mock
-//    private OrderEventDataPlatformSender orderDataPlatformSender;
-
     @Mock
-    private ApplicationEventPublisher eventPublisher;
+    private OrderEventPublisher orderEventPublisher;
 
     @Test
     @DisplayName("쿠폰을 사용하여 주문을 성공적으로 생성한다.")
@@ -119,8 +115,7 @@ class OrderFacadeTest {
         verify(couponService, times(1)).useUserIssuedCoupon(userId, issuedCouponId);
         verify(orderService, times(1)).createOrder(any(OrderServiceRequest.class));
         verify(orderService, times(1)).createOrderProduct(anyList());
-        //verify(orderDataPlatformSender, times(1)).send(any(OrderResult.class));
-        verify(eventPublisher, times(1)).publishEvent(any(OrderCreatedEvent.class));
+        verify(orderEventPublisher, times(1)).publishOrderSuccess(any(OrderResult.class));
     }
 
     @Test
@@ -180,8 +175,7 @@ class OrderFacadeTest {
         verify(couponService, never()).useUserIssuedCoupon(anyLong(), anyLong());
         verify(orderService, times(1)).createOrder(any(OrderServiceRequest.class));
         verify(orderService, times(1)).createOrderProduct(anyList());
-        //verify(orderDataPlatformSender, times(1)).send(any(OrderResult.class));
-        verify(eventPublisher, times(1)).publishEvent(any(OrderCreatedEvent.class));
+        verify(orderEventPublisher, times(1)).publishOrderSuccess(any(OrderResult.class));
     }
 
 }
