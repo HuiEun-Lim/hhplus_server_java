@@ -1,19 +1,16 @@
 package kr.hhplus.be.server.infrastructure.kafka;
 
+import kr.hhplus.be.server.application.IntegrationTestSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testcontainers.shaded.org.awaitility.Awaitility.await;
 
-@SpringBootTest
-@Component
-class KafkaIntegrationTest {
+class KafkaIntegrationTest extends IntegrationTestSupport {
 
     @Autowired
     private TestProducer producer;
