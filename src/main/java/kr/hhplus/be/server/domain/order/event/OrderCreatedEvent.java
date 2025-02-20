@@ -2,14 +2,12 @@ package kr.hhplus.be.server.domain.order.event;
 
 import kr.hhplus.be.server.domain.order.dto.response.OrderResult;
 import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
 
 @Getter
-public class OrderCreatedEvent extends ApplicationEvent {
+public class OrderCreatedEvent {
     private final OrderResult orderResult;
 
-    public OrderCreatedEvent(Object source, OrderResult orderResult) {
-        super(source);
+    public OrderCreatedEvent(OrderResult orderResult) {
         this.orderResult = orderResult;
     }
 }

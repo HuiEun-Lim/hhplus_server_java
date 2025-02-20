@@ -13,6 +13,6 @@ public class OrderEventPublisher {
     private final ApplicationEventPublisher eventPublisher;
 
     public void publishOrderSuccess(OrderResult orderResult) {
-        eventPublisher.publishEvent(new OrderCreatedEvent(this, orderResult));
+        eventPublisher.publishEvent(new OrderCreatedEvent(orderResult));
     }
 }
