@@ -9,7 +9,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -23,9 +24,9 @@ class UserRepositoryTest {
     @DisplayName("사용자의 아이디로 사용자 정보를 조회한다.")
     void findByUserId() {
         // given
-        Long userId = 1L;
         User mockUser = User.create("무지");
         User savedUser = userRepository.save(mockUser);
+        Long userId = savedUser.getUserId();
 
         // when
         User user = userRepository.findByUserId(userId);
