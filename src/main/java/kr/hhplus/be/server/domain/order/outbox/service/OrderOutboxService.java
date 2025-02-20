@@ -1,6 +1,5 @@
 package kr.hhplus.be.server.domain.order.outbox.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.hhplus.be.server.domain.order.outbox.entity.OrderOutbox;
 import kr.hhplus.be.server.domain.order.outbox.repository.OrderOutboxRepository;
 import lombok.RequiredArgsConstructor;
