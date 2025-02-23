@@ -37,14 +37,14 @@ public class OrderEventListener {
 
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void publishToKafka(OrderCreatedEvent event) {
+    public void publishToKafka(OrderCreatedEvent event) throws JsonProcessingException {
         log.info("Kafka 발행 시작 : 주문 ID = {}", event.getOrderResult().getOrderId());
 
-        OrderOutbox orderOutbox = orderOutboxService.findByMessageId(event.getOrderResult().getOrderId().toString());
+        String orderId = event.getOrderResult().getOrderId().toString();
+        String payload = objectMapper.writeValueAsString(event.getOrderResult());
 
-        if (orderOutbox != null) {
-            orderKafkaProducer.send(orderOutbox.getKafkaMessageId(), orderOutbox.getMessageId(), orderOutbox.getPayload());
-        }
+        orderKafkaProducer.send(OrderKafkaConstants.ORDER_COMPLETED, orderId, payload);
+
         log.info("Kafka 발행 종료 : 주문 ID = {}", event.getOrderResult().getOrderId());
     }
 }
