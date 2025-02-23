@@ -2,7 +2,8 @@ spring:
   application:
     name: hhplus
   profiles:
-    active: local
+    active: test
+
   datasource:
     name: HangHaePlusDataSource
     type: com.zaxxer.hikari.HikariDataSource
@@ -11,6 +12,10 @@ spring:
       connection-timeout: 10000
       max-lifetime: 60000
     driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/hhplus?characterEncoding=UTF-8&serverTimezone=UTC
+    username: application
+    password: application
+
   jpa:
     open-in-view: false
     generate-ddl: false
@@ -26,29 +31,18 @@ spring:
     init:
       mode: always
 
----
-spring.config.activate.on-profile: local
-
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/hhplus?characterEncoding=UTF-8&serverTimezone=UTC
-    username: application
-    password: application
   data:
     redis:
       host: localhost
       port: 6379
 
----
-
-spring:
   kafka:
-    bootstrap-servers: localhost:10002,localhost:10003,localhost:10004
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
       acks: all
     consumer:
+      group-id: hhplus-consumer-group
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
@@ -58,7 +52,9 @@ spring:
     properties:
       spring.json.trusted.packages: "*"
 
----
 logging:
   level:
-    kr.hhplus.be.server: INFO
+    root: INFO
+    org.springframework: INFO
+    org.testcontainers: DEBUG
+    kr.hhplus.be.server: DEBUG
