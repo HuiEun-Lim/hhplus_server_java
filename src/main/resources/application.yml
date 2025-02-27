@@ -61,4 +61,5 @@ spring:
 ---
 logging:
   level:
+    root: INFO
     kr.hhplus.be.server: INFO
